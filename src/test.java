@@ -19,18 +19,18 @@ public class test {
 
     public static void coursesPossible (String coursesPath , String finishedPath){
     try {
-        Scanner finishedScanner = new Scanner(new File(finishedPath));  
+        Scanner finishedCourseScanner = new Scanner(new File(finishedPath));  
 
 
-        FileWriter coursesToShow = new FileWriter(coursesPath);
-        PrintWriter printWriter = new PrintWriter(coursesToShow);
+        FileWriter finalCoursesWriter = new FileWriter("coursesDoable.txt");
+        PrintWriter printWriter = new PrintWriter(finalCoursesWriter);
 
 
-        while(finishedScanner.hasNextLine()){
+        while(finishedCourseScanner.hasNextLine()){
 
 
-           String courseName =finishedScanner.nextLine().split(",")[0];
-           Scanner kb_2 = new Scanner(new File("CourseOffering.csv"));   
+           String courseName =finishedCourseScanner.nextLine().split(",")[0];
+           Scanner kb_2 = new Scanner(new File(coursesPath));   
            while(kb_2.hasNextLine()){
             String currentCourse = kb_2.nextLine();
 
@@ -41,6 +41,7 @@ public class test {
             if(courseName.equals(currentCourse.split(",")[0].split("-")[0])){
                 
                 printWriter.println(currentCourse);
+                System.out.println("Done");
             }
            }
 
@@ -49,7 +50,7 @@ public class test {
      
 
         
-        coursesToShow.close();
+        finalCoursesWriter.close();
         System.out.println("Successfully wrote to the file.");
       } catch (IOException e) {
         System.out.println("An error occurred.");
