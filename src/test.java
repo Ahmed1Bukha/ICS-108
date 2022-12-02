@@ -11,19 +11,21 @@ public class test {
     public static void main(String[] args) throws Exception  
     {  
     
-        coursesPossible("CourseOffering.csv", "coursesDoable.txt");
+        coursesPossible("CourseOffering.csv", "FinishedCourses.csv","DegreePlan.csv");
 
     }
     
 
 
-    public static void coursesPossible (String coursesPath , String finishedPath){
+    public static void coursesPossible (String coursesPath , String finishedPath, String dgreePlanPath){
     try {
-        Scanner finishedCourseScanner = new Scanner(new File(finishedPath));  
 
+      List<String> Courses =new ArrayList<String>();  
 
-        FileWriter finalCoursesWriter = new FileWriter("coursesDoable.txt");
-        PrintWriter printWriter = new PrintWriter(finalCoursesWriter);
+      Scanner finishedCourseScanner = new Scanner(new File(finishedPath));  
+     
+      FileWriter finalCoursesWriter = new FileWriter("coursesDoable.txt");
+      PrintWriter printWriter = new PrintWriter(finalCoursesWriter);
 
 
         while(finishedCourseScanner.hasNextLine()){
@@ -31,14 +33,26 @@ public class test {
 
            String courseName =finishedCourseScanner.nextLine().split(",")[0];
            Scanner kb_2 = new Scanner(new File(coursesPath));   
+           Scanner degreePlanScanner = new Scanner(new File(dgreePlanPath)); 
+           String courseEnable = "";
+          while(degreePlanScanner.hasNextLine()){
+            String [] tempoCourse = degreePlanScanner.nextLine().split(",");
+            
+            if(tempoCourse[2].equals(courseName)){
+              courseEnable = tempoCourse[0];
+              System.out.println(courseEnable);
+              break;
+            }
+
+          }
+
            while(kb_2.hasNextLine()){
             String currentCourse = kb_2.nextLine();
 
 
-            System.out.println(courseName+" lmfa");
-            System.out.println(currentCourse.split(",")[0].split("-")[0]);
+            
 
-            if(courseName.equals(currentCourse.split(",")[0].split("-")[0])){
+            if(currentCourse.split(",")[0].split("-")[0].equals(courseEnable)){
                 
                 printWriter.println(currentCourse);
                 System.out.println("Done");
