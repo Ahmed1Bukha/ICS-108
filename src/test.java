@@ -20,7 +20,7 @@ public class test {
     public static void coursesPossible (String coursesPath , String finishedPath, String dgreePlanPath){
     try {
 
-      List<String> Courses =new ArrayList<String>();  
+      List<Course> Courses =new ArrayList<Course>();  
 
       Scanner finishedCourseScanner = new Scanner(new File(finishedPath));  
      
@@ -54,7 +54,9 @@ public class test {
 
             if(currentCourse.split(",")[0].split("-")[0].equals(courseEnable)){
                 
+              String []tempo = currentCourse.split(",");
                 printWriter.println(currentCourse);
+                Courses.add(new Course())
                 System.out.println("Done");
             }
            }
@@ -66,6 +68,9 @@ public class test {
         
         finalCoursesWriter.close();
         System.out.println("Successfully wrote to the file.");
+
+
+        System.out.println(Courses);
       } catch (IOException e) {
         System.out.println("An error occurred.");
         e.printStackTrace();
