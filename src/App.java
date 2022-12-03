@@ -3,6 +3,7 @@ import java.util.Scanner;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.*;  
@@ -15,63 +16,87 @@ import java.util.*;
 public class App extends Application {
  @Override // Override the start method in the Application class
  public void start(Stage primaryStage) {
- // Create a button and place it in the scene
- Button btOK = new Button("OK");
- Scene scene = new Scene(btOK, 500, 250);
- primaryStage.setTitle("MyJavaFX"); // Set the stage title
- primaryStage.setScene(scene); // Place the scene in the stage
- primaryStage.show(); // Display the stage
+ BorderPane bPane = new BorderPane();
+ primaryStage.setTitle("Course offering");
+ Scene scene = new Scene(bPane,1200,700);
+ primaryStage.setScene(scene);
+ primaryStage.show();
+
  }
 
  public static void main(String[] args) {
   launch(args);
  }
 
+ public static List<Course> coursesPossible (String coursesPath , String finishedPath, String dgreePlanPath){
+  List<Course> Courses =new ArrayList<Course>();  
 
- public static void coursesPossible (String coursesPath , String finishedPath){
-    try {
-        Scanner finishedScanner = new Scanner(new File(finishedPath));  
+  try {
 
-
-        FileWriter coursesToShow = new FileWriter(coursesPath);
-        PrintWriter printWriter = new PrintWriter(coursesToShow);
-
-
-        while(finishedScanner.hasNextLine()){
-
-
-           String courseName =finishedScanner.nextLine().split(",")[0];
-           Scanner kb_2 = new Scanner(new File("CourseOffering.csv"));   
-           while(kb_2.hasNextLine()){
-            String currentCourse = kb_2.nextLine();
-
-
-            System.out.println(courseName+" lmfa");
-            System.out.println(currentCourse.split(",")[0].split("-")[0]);
-
-            if(courseName.equals(currentCourse.split(",")[0].split("-")[0])){
-                
-                printWriter.println(currentCourse);
-            }
-           }
-
-        }
-       
-     
-
-        
-        coursesToShow.close();
-        System.out.println("Successfully wrote to the file.");
-      } catch (IOException e) {
-        System.out.println("An error occurred.");
-        e.printStackTrace();
-      }
-  
-
-
-    }
  
 
+  Scanner finishedCourseScanner = new Scanner(new File(finishedPath));  
+ 
+  FileWriter finalCoursesWriter = new FileWriter("coursesDoable.txt");
+  PrintWriter printWriter = new PrintWriter(finalCoursesWriter);
+
+
+    while(finishedCourseScanner.hasNextLine()){
+
+
+       String courseName =finishedCourseScanner.nextLine().split(",")[0];
+       Scanner kb_2 = new Scanner(new File(coursesPath));   
+       Scanner degreePlanScanner = new Scanner(new File(dgreePlanPath)); 
+       String courseEnable = "";
+      while(degreePlanScanner.hasNextLine()){
+        String [] tempoCourse = degreePlanScanner.nextLine().split(",");
+        
+        if(tempoCourse[2].equals(courseName)){
+          courseEnable = tempoCourse[0];
+          System.out.println(courseEnable);
+          break;
+        }
+
+      }
+
+       while(kb_2.hasNextLine()){
+        String currentCourse = kb_2.nextLine();
+
+
+        
+
+        if(currentCourse.split(",")[0].split("-")[0].equals(courseEnable)){
+            
+          String []tempo = currentCourse.split(",");
+            printWriter.println(currentCourse);
+            Courses.add(new Course(tempo[0],tempo[1],tempo[2],tempo[4],tempo[5],tempo[6]));
+          
+
+
+        }
+       }
+
+    }
+   
+ 
+
+    
+    finalCoursesWriter.close();
+    System.out.println("Successfully wrote to the file.");
+
+
+    System.out.println(Courses);
+
+    return Courses;
+  } catch (IOException e) {
+    System.out.println("An error occurred.");
+    e.printStackTrace();
+    return Courses;
+  }
+
+
+
+}
 
 
 }

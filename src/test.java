@@ -17,10 +17,12 @@ public class test {
     
 
 
-    public static void coursesPossible (String coursesPath , String finishedPath, String dgreePlanPath){
-    try {
-
+    public static List<Course> coursesPossible (String coursesPath , String finishedPath, String dgreePlanPath){
       List<Course> Courses =new ArrayList<Course>();  
+   
+      try {
+
+     
 
       Scanner finishedCourseScanner = new Scanner(new File(finishedPath));  
      
@@ -56,8 +58,10 @@ public class test {
                 
               String []tempo = currentCourse.split(",");
                 printWriter.println(currentCourse);
-                Courses.add(new Course())
-                System.out.println("Done");
+                Courses.add(new Course(tempo[0],tempo[1],tempo[2],tempo[4],tempo[5],tempo[6]));
+              
+
+
             }
            }
 
@@ -71,9 +75,12 @@ public class test {
 
 
         System.out.println(Courses);
+
+        return Courses;
       } catch (IOException e) {
         System.out.println("An error occurred.");
         e.printStackTrace();
+        return Courses;
       }
   
 
