@@ -44,6 +44,7 @@ public class test {
               courseEnable = tempoCourse[0];
               System.out.println(courseEnable);
               System.out.println("this is a test for the branch");
+              System.out.println("Another test");
               break;
             }
 
