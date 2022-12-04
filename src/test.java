@@ -26,58 +26,42 @@ public class test {
 
       Scanner finishedCourseScanner = new Scanner(new File(finishedPath));  
      
-      FileWriter finalCoursesWriter = new FileWriter("coursesDoable.txt");
-      PrintWriter printWriter = new PrintWriter(finalCoursesWriter);
+     
 
+      List<String> finishedCourse= new ArrayList<String>();
+      List<String> courseAvailable = new ArrayList<String>();
+        //It will check every finished course.
 
+        String courseName ="";
         while(finishedCourseScanner.hasNextLine()){
-
-
-           String courseName =finishedCourseScanner.nextLine().split(",")[0];
-           Scanner kb_2 = new Scanner(new File(coursesPath));   
+        
+           courseName =finishedCourseScanner.nextLine().split(",")[0];
+          finishedCourse.add(courseName);
+        System.out.println((finishedCourse));
+        }
+           
+           Scanner courseOfferingScanner = new Scanner(new File(coursesPath));   
            Scanner degreePlanScanner = new Scanner(new File(dgreePlanPath)); 
-           String courseEnable = "";
-          while(degreePlanScanner.hasNextLine()){
-            String [] tempoCourse = degreePlanScanner.nextLine().split(",");
-            
-            if(tempoCourse[2].equals(courseName)){
-              courseEnable = tempoCourse[0];
-              System.out.println(courseEnable);
-              System.out.println("this is a test for the branch");
-              System.out.println("Another test");
-              break;
+          
+
+           while(degreePlanScanner.hasNextLine()){
+            String []tempo = degreePlanScanner.nextLine().split(",");
+            if(finishedCourse.contains(tempo[2]) && !finishedCourse.contains(tempo[0])){
+              courseAvailable.add(tempo[0]);
             }
+           }
+           System.out.println(courseAvailable);
 
-          }
-
-           while(kb_2.hasNextLine()){
-            String currentCourse = kb_2.nextLine();
-
-
-            
-
-            if(currentCourse.split(",")[0].split("-")[0].equals(courseEnable)){
-                
-              String []tempo = currentCourse.split(",");
-                printWriter.println(currentCourse);
-                Courses.add(new Course(tempo[0],tempo[1],tempo[2],tempo[4],tempo[5],tempo[6]));
-              
-
+           while(courseOfferingScanner.hasNextLine()){
+            String tempo = courseOfferingScanner.nextLine();
+            if(courseAvailable.contains(tempo.split(",")[0].split("-")[0])
+            ){
+              String []tempoArray = tempo.split(",");
+              Courses.add(new Course(tempoArray[0],tempoArray[1],tempoArray[2],tempoArray[4],tempoArray[5],tempoArray[6]));
 
             }
            }
-
-        }
-       
-     
-
-        
-        finalCoursesWriter.close();
-        System.out.println("Successfully wrote to the file.");
-
-
-        System.out.println(Courses);
-
+          System.out.println(Courses);
         return Courses;
       } catch (IOException e) {
         System.out.println("An error occurred.");

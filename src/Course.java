@@ -39,7 +39,7 @@ public class Course {
         return this.time;
     }
     public String toString(){
-        return this.title+" "+this.activity+".";
+        return this.title;
     }
 
     
