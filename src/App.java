@@ -2,7 +2,8 @@ import java.util.Scanner;
 
 import javax.sound.sampled.SourceDataLine;
 
-import javafx.scene.control.ScrollBar;  
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -35,11 +36,11 @@ public class App extends Application {
 
   //Scene 1 Ahmed's Work
  
-   
+  ScrollPane scrollPane = new ScrollPane();
   Button button1= new Button("Next");
   BorderPane pane1 = new BorderPane();
   Label title = new Label("Add to Basket");
-  StackPane stack1 = new StackPane();
+  
 
 VBox vbox = new VBox(courses.size());
 
@@ -60,15 +61,18 @@ VBox vbox = new VBox(courses.size());
   title.setFont(new Font("Arial", 50));
   button1.setOnAction(e -> primaryStage.setScene(scene2));  
   pane1.setPadding(new Insets(4,4,4,4));
+  scrollPane.fitToWidthProperty().set(true);
 
   pane1.setTop(title);
   pane1.setBottom(button1);
-  pane1.setLeft(vbox);
+  scrollPane.setContent(vbox);
+  pane1.setCenter(scrollPane);
   
 
 
   BorderPane.setAlignment(button1, Pos.TOP_RIGHT);
   BorderPane.setAlignment(title,Pos.CENTER);
+  BorderPane.setAlignment(scrollPane, Pos.CENTER);
   scene1= new Scene(pane1, 1400, 900);
                  
 
