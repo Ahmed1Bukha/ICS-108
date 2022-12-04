@@ -43,6 +43,7 @@ public class test {
             if(tempoCourse[2].equals(courseName)){
               courseEnable = tempoCourse[0];
               System.out.println(courseEnable);
+              System.out.println("this is a test for the branch");
               break;
             }
 
