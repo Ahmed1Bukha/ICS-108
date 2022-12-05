@@ -1,5 +1,9 @@
 import java.util.Scanner;
 
+import javax.sound.sampled.SourceDataLine;
+
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -7,7 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.*;  
@@ -19,19 +27,52 @@ import java.util.*;
 
 public class App extends Application {
   Scene scene1, scene2;
+
+  List<Course> courses= coursesPossible("CourseOffering.csv", "FinishedCourses.csv","DegreePlan.csv");
+  
  @Override // Override the start method in the Application class
  public void start(Stage primaryStage) {
   primaryStage.setTitle("My First JavaFX GUI");
 
   //Scene 1 Ahmed's Work
-  
+ 
+  ScrollPane scrollPane = new ScrollPane();
   Button button1= new Button("Next");
   BorderPane pane1 = new BorderPane();
+  Label title = new Label("Add to Basket");
   
+
+VBox vbox = new VBox(courses.size());
+
+  for(int i=0; i<courses.size(); i++){
+    HBox hbox = new HBox(6);
+    hbox.getChildren().addAll(
+      new Label(courses.get(i).getTitle()),
+      new Label(courses.get(i).getActivity()),
+      new Label(courses.get(i).getCRN()),
+      new Label(courses.get(i).getInstructor()),
+      new Label(courses.get(i).getTime()),
+      new Label(courses.get(i).getDays())
+
+    );
+    vbox.getChildren().add(hbox);
+  }
+
+  title.setFont(new Font("Arial", 50));
   button1.setOnAction(e -> primaryStage.setScene(scene2));  
   pane1.setPadding(new Insets(4,4,4,4));
+  scrollPane.fitToWidthProperty().set(true);
+
+  pane1.setTop(title);
   pane1.setBottom(button1);
+  scrollPane.setContent(vbox);
+  pane1.setCenter(scrollPane);
+  
+
+
   BorderPane.setAlignment(button1, Pos.TOP_RIGHT);
+  BorderPane.setAlignment(title,Pos.CENTER);
+  BorderPane.setAlignment(scrollPane, Pos.CENTER);
   scene1= new Scene(pane1, 1400, 900);
                  
 
