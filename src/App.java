@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 import javax.sound.sampled.SourceDataLine;
 
 import javafx.scene.control.ScrollBar;
@@ -18,9 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.*;  
-import java.util.Scanner; 
-
+import java.io.*;
 import java.io.FileWriter;   // Import the FileWriter class
 import java.io.IOException;
 import java.util.*;
@@ -28,8 +24,8 @@ import java.util.*;
 public class App extends Application {
   Scene scene1, scene2;
 
-  List<Course> courses= coursesPossible("CourseOffering.csv", "FinishedCourses.csv","DegreePlan.csv");
-  
+  List<Course> coursesOffered= coursesPossible("CourseOffering.csv", "FinishedCourses.csv","DegreePlan.csv");
+  List<Course> basketCourses = new ArrayList<>();
  @Override // Override the start method in the Application class
  public void start(Stage primaryStage) {
   primaryStage.setTitle("My First JavaFX GUI");
@@ -42,17 +38,30 @@ public class App extends Application {
   Label title = new Label("Add to Basket");
   
 
-VBox vbox = new VBox(courses.size());
+VBox vbox = new VBox(coursesOffered.size()+1);
 
-  for(int i=0; i<courses.size(); i++){
-    HBox hbox = new HBox(6);
+HBox header = new HBox(7);
+header.getChildren().addAll(
+  new Label("COURSE"),
+  new Label("TYPE"),
+  new Label("CRN"),
+  new Label("INTRUCTOR"),
+  new Label("TIME"),
+  new Label("DAY")
+);
+
+vbox.getChildren().add(header);
+  for(int i=0; i<coursesOffered.size(); i++){
+    HBox hbox = new HBox(7);
+    AddRemoveButton addRemoveButton = new AddRemoveButton(coursesOffered.get(i), basketCourses);
     hbox.getChildren().addAll(
-      new Label(courses.get(i).getTitle()),
-      new Label(courses.get(i).getActivity()),
-      new Label(courses.get(i).getCRN()),
-      new Label(courses.get(i).getInstructor()),
-      new Label(courses.get(i).getTime()),
-      new Label(courses.get(i).getDays())
+      new Label(coursesOffered.get(i).getTitle()),
+      new Label(coursesOffered.get(i).getActivity()),
+      new Label(coursesOffered.get(i).getCRN()),
+      new Label(coursesOffered.get(i).getInstructor()),
+      new Label(coursesOffered.get(i).getTime()),
+      new Label(coursesOffered.get(i).getDays()),
+     addRemoveButton.returnButton()
 
     );
     vbox.getChildren().add(hbox);
