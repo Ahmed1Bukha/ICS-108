@@ -79,7 +79,7 @@ public class App extends Application {
     BorderPane.setAlignment(button1, Pos.TOP_RIGHT);
     BorderPane.setAlignment(title, Pos.CENTER);
     BorderPane.setAlignment(scrollPane, Pos.CENTER);
-    scene1 = new Scene(pane1, 800, 600);
+    scene1 = new Scene(pane1, 1200, 800);
 
     // Scene 2 Abdulla's work
     Label label2 = new Label("This is the second scene");
