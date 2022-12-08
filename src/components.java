@@ -34,9 +34,27 @@ public class components {
                 button.setStyle("-fx-background-color: green; -fx-text-fill: white;");
             }
 
-            System.out.println(course.getTitle());
-            System.out.println(coursesInBasket);
+            //System.out.println(course.getTitle());
+            //System.out.println(coursesInBasket);
             
+        });
+
+        return button;
+
+    }
+
+    public static Button AddRemoveBasket(Course course, List<Course> coursesInJadwal,List<Course> coursesInBasket) {
+
+        Button button = new Button("Add");
+        
+        button.setOnAction(e -> {
+            if (button.getText().equals("Add")) {
+                coursesInJadwal.add(course); 
+                coursesInBasket.remove(course);
+            }
+            
+
+            System.out.println(coursesInJadwal.size());
         });
 
         return button;
