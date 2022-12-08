@@ -16,7 +16,9 @@ import javafx.stage.Stage;
 
 import java.util.*;
 
+
 public class App extends Application {
+ 
   Scene scene1, scene2;
 
   List<Course> coursesOffered = Course.coursesPossible("CourseOffering.csv", "FinishedCourses.csv", "DegreePlan.csv");
@@ -61,10 +63,11 @@ public class App extends Application {
           components.itemCard("      " + coursesOffered.get(i).getDays()),
           components.itemCard("                                    "),
           components.AddRemoveButton(coursesOffered.get(i), basketCourses)
-
+          
       );
       vbox.getChildren().add(courseRow);
     }
+    
 
     title.setFont(new Font("Arial", 50));
     button1.setOnAction(e -> primaryStage.setScene(scene2));
@@ -85,12 +88,31 @@ public class App extends Application {
     Label label2 = new Label("This is the second scene");
     Button button2 = new Button("Go to scene 1");
     button2.setOnAction(e -> primaryStage.setScene(scene1));
-    VBox layout2 = new VBox(20);
-    layout2.getChildren().addAll(label2, button2);
-    scene2 = new Scene(layout2, 800, 600);
+    BorderPane layout2 = new BorderPane();
+    layout2.setTop(label2);
+    ScrollPane scrollPane2 = new ScrollPane();
+    layout2.setRight(scrollPane2);
+    VBox coursesColumn = new VBox();
+    scrollPane2.setContent(coursesColumn);
+    
+    System.out.println(basketCourses.size());
 
+    for(int i=0;i<basketCourses.size();i++){
+        BorderPane courseCard = new BorderPane();
+        courseCard.setPadding(new Insets(10,10,10,10));
+        courseCard.setCenter(new Label("lmfao"));
+        Button addBT = new Button();
+        courseCard.setBottom(addBT);
+        coursesColumn.getChildren().addAll(courseCard);
+    }
+    layout2.setPadding(new Insets(10,10,10,01));
+    
+
+    scene2 = new Scene(layout2, 800, 600);
+   
     primaryStage.setScene(scene1);
     primaryStage.show();
+    
 
   }
 
