@@ -15,7 +15,7 @@ public class Course {
     private String days;
     private String time;
 
-    public Course(String title, String activity, String CNR, String instructor, String days, String time) {
+    public Course(String title, String activity, String CRN, String instructor, String days, String time) {
         this.title = title;
         this.activity = activity;
         this.CRN = CRN;
