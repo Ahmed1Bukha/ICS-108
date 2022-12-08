@@ -23,6 +23,7 @@ public class App extends Application {
 
   List<Course> coursesOffered = Course.coursesPossible("CourseOffering.csv", "FinishedCourses.csv", "DegreePlan.csv");
   List<Course> basketCourses = new ArrayList<>();
+  VBox coursesColumn = new VBox();
 
   @Override // Override the start method in the Application class
   public void start(Stage primaryStage) {
@@ -87,24 +88,34 @@ public class App extends Application {
     // Scene 2 Abdulla's work
     Label label2 = new Label("This is the second scene");
     Button button2 = new Button("Go to scene 1");
-    button2.setOnAction(e -> primaryStage.setScene(scene1));
-    BorderPane layout2 = new BorderPane();
-    layout2.setTop(label2);
-    ScrollPane scrollPane2 = new ScrollPane();
-    layout2.setRight(scrollPane2);
-    VBox coursesColumn = new VBox();
-    scrollPane2.setContent(coursesColumn);
-    
-    System.out.println(basketCourses.size());
-
-    for(int i=0;i<basketCourses.size();i++){
+    button1.setOnAction(e -> {
+      for(int i=0;i<basketCourses.size();i++){
         BorderPane courseCard = new BorderPane();
         courseCard.setPadding(new Insets(10,10,10,10));
         courseCard.setCenter(new Label("lmfao"));
         Button addBT = new Button();
         courseCard.setBottom(addBT);
         coursesColumn.getChildren().addAll(courseCard);
+        primaryStage.setScene(scene1);
+    
+      }
+    
     }
+    
+    );
+
+   
+   
+    BorderPane layout2 = new BorderPane();
+    layout2.setTop(label2);
+    ScrollPane scrollPane2 = new ScrollPane();
+    layout2.setRight(scrollPane2);
+    
+    scrollPane2.setContent(coursesColumn);
+    
+    System.out.println(basketCourses.size());
+
+  
     layout2.setPadding(new Insets(10,10,10,01));
     
 
