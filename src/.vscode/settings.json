@@ -9,6 +9,14 @@
         "c:\\Users\\Alwaleed Alhazmi\\Desktop\\javafx-sdk-19\\lib\\javafx.media.jar",
         "c:\\Users\\Alwaleed Alhazmi\\Desktop\\javafx-sdk-19\\lib\\javafx.swing.jar",
         "c:\\Users\\Alwaleed Alhazmi\\Desktop\\javafx-sdk-19\\lib\\javafx.web.jar",
-        "c:\\Users\\Alwaleed Alhazmi\\Desktop\\javafx-sdk-19\\lib\\javafx-swt.jar"
+        "c:\\Users\\Alwaleed Alhazmi\\Desktop\\javafx-sdk-19\\lib\\javafx-swt.jar",
+        "c:\\javafx-sdk-19\\lib\\javafx.base.jar",
+        "c:\\javafx-sdk-19\\lib\\javafx.controls.jar",
+        "c:\\javafx-sdk-19\\lib\\javafx.fxml.jar",
+        "c:\\javafx-sdk-19\\lib\\javafx.graphics.jar",
+        "c:\\javafx-sdk-19\\lib\\javafx.media.jar",
+        "c:\\javafx-sdk-19\\lib\\javafx.swing.jar",
+        "c:\\javafx-sdk-19\\lib\\javafx.web.jar",
+        "c:\\javafx-sdk-19\\lib\\javafx-swt.jar"
     ]
 }
