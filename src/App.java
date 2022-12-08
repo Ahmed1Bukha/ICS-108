@@ -8,11 +8,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
 
 import java.util.*;
 
@@ -81,13 +85,49 @@ public class App extends Application {
     BorderPane.setAlignment(scrollPane, Pos.CENTER);
     scene1 = new Scene(pane1, 1200, 800);
 
+
+
+
+
     // Scene 2 Abdulla's work
-    Label label2 = new Label("This is the second scene");
+    BorderPane pane2 = new BorderPane();
+    String cssLayout = "-fx-border-color: black;\n" +
+                   "-fx-border-insets: 5;\n" +
+                   "-fx-border-width: 3;\n";
+    HBox calendar = new HBox();
+    calendar.setMaxWidth(1000);
+    VBox sunday = new VBox();
+    sunday.setStyle(cssLayout);
+    sunday.setMinWidth(200);
+
+    VBox monday = new VBox();
+    monday.setStyle(cssLayout);
+    monday.setMinWidth(200);
+   
+    VBox tuesday = new VBox();
+    tuesday.setStyle(cssLayout);
+    tuesday.setMinWidth(200);
+
+    VBox wednsday = new VBox();
+    wednsday.setStyle(cssLayout);
+    wednsday.setMinWidth(200);
+
+    VBox thursday = new VBox();
+    thursday.setStyle(cssLayout);
+    thursday.setMinWidth(200);
+
+    calendar.getChildren().addAll(sunday,monday,tuesday,wednsday,thursday);
+    
+ 
+    
+    calendar.setStyle(cssLayout);
     Button button2 = new Button("Go to scene 1");
     button2.setOnAction(e -> primaryStage.setScene(scene1));
-    VBox layout2 = new VBox(20);
-    layout2.getChildren().addAll(label2, button2);
-    scene2 = new Scene(layout2, 800, 600);
+    
+    
+    pane2.setBottom(button2);
+    pane2.setLeft(calendar);
+    scene2 = new Scene(pane2, 1200, 800);
 
     primaryStage.setScene(scene1);
     primaryStage.show();
