@@ -24,6 +24,8 @@ public class App extends Application {
   List<Course> coursesOffered = Course.coursesPossible("CourseOffering.csv", "FinishedCourses.csv", "DegreePlan.csv");
   List<Course> basketCourses = new ArrayList<>();
   List<Course> jadwal = new ArrayList<>();
+
+
   VBox coursesColumn = new VBox();
 
   @Override // Override the start method in the Application class
@@ -91,6 +93,7 @@ public class App extends Application {
     Button button2 = new Button("Go to scene 1");
 
 
+
     button1.setOnAction(e ->{ 
       primaryStage.setScene(scene2);
 
@@ -108,7 +111,8 @@ public class App extends Application {
       
     } 
     });
-
+   
+   
 
     BorderPane layout2 = new BorderPane();
     layout2.setTop(label2);
@@ -119,7 +123,6 @@ public class App extends Application {
     
     System.out.println(basketCourses.size());
 
-    
     layout2.setPadding(new Insets(10,10,10,01));
     
 

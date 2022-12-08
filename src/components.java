@@ -34,8 +34,10 @@ public class components {
                 button.setStyle("-fx-background-color: green; -fx-text-fill: white;");
             }
 
+
             //System.out.println(course.getTitle());
             //System.out.println(coursesInBasket);
+
             
         });
 
