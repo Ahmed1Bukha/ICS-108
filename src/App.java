@@ -25,7 +25,7 @@ public class App extends Application {
   List<Course> basketCourses = new ArrayList<>();
   List<Course> jadwal = new ArrayList<>();
 
-
+  
   VBox coursesColumn = new VBox();
 
   @Override // Override the start method in the Application class
@@ -104,7 +104,7 @@ public class App extends Application {
       courseCard.getChildren().addAll((new Label(basketCourses.get(i).getTitle()+" "+basketCourses.get(i).getActivity())),
       new Label(basketCourses.get(i).getDays()),
       //there is a problem with this button, I'll fix it 
-      components.AddRemoveBasket(basketCourses.get(i),jadwal,basketCourses));
+      components.AddRemoveBasket(basketCourses.get(i),jadwal,basketCourses,primaryStage,scene2,coursesColumn,courseCard));
 
       courseCard.setAlignment(Pos.CENTER);
       coursesColumn.getChildren().addAll(courseCard);
