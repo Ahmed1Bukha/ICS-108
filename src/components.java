@@ -51,8 +51,11 @@ public class components {
         
         button.setOnAction(e -> {
             if (button.getText().equals("Add")) {
-                coursesInJadwal.add(course); 
+                coursesInJadwal.add(course);
+
                 coursesInBasket.remove(course);
+                
+
             }
             
 

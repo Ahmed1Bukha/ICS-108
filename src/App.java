@@ -106,13 +106,13 @@ public class App extends Application {
       //there is a problem with this button, I'll fix it 
       components.AddRemoveBasket(basketCourses.get(i),jadwal,basketCourses));
 
-          courseCard.setAlignment(Pos.CENTER);
+      courseCard.setAlignment(Pos.CENTER);
       coursesColumn.getChildren().addAll(courseCard);
       
     } 
     });
    
-   
+                  
 
     BorderPane layout2 = new BorderPane();
     layout2.setTop(label2);
