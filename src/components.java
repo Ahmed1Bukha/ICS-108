@@ -1,10 +1,14 @@
 import java.util.List;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.transform.Scale;
+import javafx.stage.Stage;
 
 public class components {
 
@@ -34,8 +38,33 @@ public class components {
                 button.setStyle("-fx-background-color: green; -fx-text-fill: white;");
             }
 
-            System.out.println(course.getTitle());
-            System.out.println(coursesInBasket);
+
+            //System.out.println(course.getTitle());
+            //System.out.println(coursesInBasket);
+
+            
+        });
+
+        return button;
+
+    }
+
+    public static Button AddRemoveBasket(Course course, List<Course> coursesInJadwal,List<Course> coursesInBasket, Stage primaryStage,Scene scene,VBox card,VBox cardsmol) {
+
+        Button button = new Button("Add");
+        
+        button.setOnAction(e -> {
+            if (button.getText().equals("Add")) {
+                coursesInJadwal.add(course);
+                coursesInBasket.remove(course);
+
+                card.getChildren().remove(cardsmol);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+            
+
+            System.out.println(coursesInJadwal.size());
         });
 
         return button;

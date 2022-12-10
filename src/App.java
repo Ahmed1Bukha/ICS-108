@@ -16,11 +16,17 @@ import javafx.stage.Stage;
 
 import java.util.*;
 
+
 public class App extends Application {
+ 
   Scene scene1, scene2;
 
   List<Course> coursesOffered = Course.coursesPossible("CourseOffering.csv", "FinishedCourses.csv", "DegreePlan.csv");
   List<Course> basketCourses = new ArrayList<>();
+  List<Course> jadwal = new ArrayList<>();
+
+  
+  VBox coursesColumn = new VBox();
 
   @Override // Override the start method in the Application class
   public void start(Stage primaryStage) {
@@ -61,10 +67,11 @@ public class App extends Application {
           components.itemCard("      " + coursesOffered.get(i).getDays()),
           components.itemCard("                                    "),
           components.AddRemoveButton(coursesOffered.get(i), basketCourses)
-
+          
       );
       vbox.getChildren().add(courseRow);
     }
+    
 
     title.setFont(new Font("Arial", 50));
     button1.setOnAction(e -> primaryStage.setScene(scene2));
@@ -84,13 +91,46 @@ public class App extends Application {
     // Scene 2 Abdulla's work
     Label label2 = new Label("This is the second scene");
     Button button2 = new Button("Go to scene 1");
-    button2.setOnAction(e -> primaryStage.setScene(scene1));
-    VBox layout2 = new VBox(20);
-    layout2.getChildren().addAll(label2, button2);
-    scene2 = new Scene(layout2, 800, 600);
 
+
+
+    button1.setOnAction(e ->{ 
+      primaryStage.setScene(scene2);
+
+    for(int i=0;i<basketCourses.size();i++){
+      VBox courseCard = new VBox();
+      courseCard.setPadding(new Insets(10,10,10,10));
+     
+      courseCard.getChildren().addAll((new Label(basketCourses.get(i).getTitle()+" "+basketCourses.get(i).getActivity())),
+      new Label(basketCourses.get(i).getDays()),
+      //there is a problem with this button, I'll fix it 
+      components.AddRemoveBasket(basketCourses.get(i),jadwal,basketCourses,primaryStage,scene2,coursesColumn,courseCard));
+
+      courseCard.setAlignment(Pos.CENTER);
+      coursesColumn.getChildren().addAll(courseCard);
+      
+    } 
+    });
+   
+                  
+
+    BorderPane layout2 = new BorderPane();
+    layout2.setTop(label2);
+    ScrollPane scrollPane2 = new ScrollPane();
+    layout2.setRight(scrollPane2);
+    
+    scrollPane2.setContent(coursesColumn);
+    
+    System.out.println(basketCourses.size());
+
+    layout2.setPadding(new Insets(10,10,10,01));
+    
+
+    scene2 = new Scene(layout2, 800, 600);
+    
     primaryStage.setScene(scene1);
     primaryStage.show();
+    
 
   }
 
