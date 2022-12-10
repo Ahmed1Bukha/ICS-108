@@ -1,10 +1,11 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public class Course {
+public class Course implements Comparable<Course>{
 
     private String title;
     private String activity;
@@ -12,6 +13,9 @@ public class Course {
     private String instructor;
     private String days;
     private String time;
+    private int beginHour;
+    private int totalTime;
+    private int endTime;
 
     public Course(String title, String activity, String CNR, String instructor, String days, String time) {
         this.title = title;
@@ -20,6 +24,7 @@ public class Course {
         this.instructor = instructor;
         this.days = days;
         this.time = time;
+        setCells(time);
 
     }
 
@@ -49,6 +54,65 @@ public class Course {
 
     public String toString() {
         return this.title;
+    }
+
+    public boolean courseConflict(Course course){
+      boolean isConflict = false;
+
+      if(this.beginHour == course.beginHour){
+        isConflict = true;
+      }
+        else if(this.beginHour > course.beginHour && this.endTime<course.beginHour){
+            System.out.println(1);
+            isConflict = true;
+        }
+        else if(this.beginHour  > course.endTime &&  this.beginHour< course.beginHour){
+            isConflict=true;
+            System.out.println(2);
+        }
+
+        else if(this.beginHour> course.beginHour && this.endTime< course.endTime){
+            isConflict= true;
+            System.out.println(3);
+        }
+        return isConflict;
+
+    }
+    public void setCells(String time){
+        String []tempo = time.split("-");
+        String beginTime = tempo[0];
+        int beginHour = Integer.parseInt(beginTime.substring(0, 2));
+        int beginMin = Integer.parseInt(beginTime.substring(2, 4));
+
+        String endTime = tempo[1];
+        int endHour = Integer.parseInt(endTime.substring(0, 2));
+        int endMin = Integer.parseInt(endTime.substring(2, 4));
+
+        System.out.println(beginMin+"begin");
+        System.out.println(endMin+"end");
+
+
+  
+
+    this.beginHour = ((beginHour-7)*60)+(beginMin);
+    this.endTime = ((endHour-7)*60)+(endMin);
+
+    this.totalTime = (((endMin+((endHour-7)*60)) - (beginMin+((beginHour-7)*60))))/12;
+
+    System.out.println(this.totalTime);
+     
+    }
+
+    public int totalHours(){
+        System.out.println(totalTime);
+        return this.totalTime;
+    }
+
+    public int getBeginHour(){
+        return this.beginHour;
+    }
+    public int getEndHour(){
+        return this.endTime;
     }
 
     public static List<Course> coursesPossible(String coursesPath, String finishedPath, String dgreePlanPath) {
@@ -99,5 +163,22 @@ public class Course {
             return Courses;
         }
 
+    }
+
+
+
+    
+    @Override
+    public int compareTo(Course o) {
+       
+        if(this.getBeginHour()> o.getBeginHour()){
+            return 1;
+        }
+        else if(this.getBeginHour()<o.getBeginHour()){
+            return -1;
+        }
+        else{
+            return 0;
+        }
     }
 }
