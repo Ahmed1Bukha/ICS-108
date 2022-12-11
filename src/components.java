@@ -1,9 +1,13 @@
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
+
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -11,7 +15,7 @@ import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
 public class components {
-
+  
     public static Label itemCard(String title) {
         Label titleLabel = new Label(title);
         titleLabel.setTextFill(Color.WHITE);
@@ -70,5 +74,53 @@ public class components {
         return button;
 
     }
+
+    public static VBox jadwalButton(Course course, double height){
+       
+        Button button = new Button("Del");
+        button.setOnAction(e->{
+            System.out.println("Course");
+        });
+        VBox vBox = new VBox(0);
+        vBox.setMinHeight(height);
+        vBox.getChildren().addAll(new Label(course.getTitle()),
+        button
+        );
+        String cssLayout = "-fx-border-color: black;\n" +
+        "-fx-border-insets: 5;\n" +
+        "-fx-border-width: 3;\n";
+        vBox.setStyle(cssLayout);
+        
+        VBox.setMargin(vBox, new Insets(0));
+        return vBox;
+    }
+
+    public static List<VBox> columnMaker(List<Course> courses){
+        List<VBox> columnFinal = new ArrayList<>();
+        int base=0;
+        for(int i=0; i< courses.size(); i++){
+            Course course = courses.get(i);
+
+                VBox vBox = new VBox();
+                vBox.setPrefHeight((course.getBeginHour() - base)*2);
+                columnFinal.add(vBox);
+                VBox courseBox = jadwalButton(course, (course.getEndHour()-course.getBeginHour())*2);
+                columnFinal.add(courseBox);
+                base = course.getEndHour();
+
+
+            
+
+
+        }
+
+
+
+        return columnFinal;
+
+    }
+
+
+ 
 
 }
