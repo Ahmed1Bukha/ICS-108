@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,7 +19,7 @@ public class Course implements Comparable<Course>{
     private int totalTime;
     private int endTime;
 
-    public Course(String title, String activity, String CNR, String instructor, String days, String time) {
+    public Course(String title, String activity, String CRN, String instructor, String days, String time) {
         this.title = title;
         this.activity = activity;
         this.CRN = CRN;
@@ -55,6 +57,7 @@ public class Course implements Comparable<Course>{
     public String toString() {
         return this.title;
     }
+
 
     public boolean courseConflict(Course course){
       boolean isConflict = false;
@@ -181,4 +184,5 @@ public class Course implements Comparable<Course>{
             return 0;
         }
     }
+
 }
