@@ -98,17 +98,9 @@ public class App extends Application {
 
     // Scene 2 Abdulla's work
 
-   List<Course> ch= new ArrayList<>();
+ 
 
 
-   
-   ch.add(coursesOffered.get(5));
-   ch.add(coursesOffered.get(1));
-   ch.add(coursesOffered.get(12));
-   Collections.sort(ch);
-
-   
-   System.out.println("It does conflict "+ ch.get(1).courseConflict(coursesOffered.get(1)));
    
    
 
@@ -124,10 +116,7 @@ public class App extends Application {
 
   
     
-sunday.getChildren().addAll(
-  components.columnMaker(ch)
-);
-    
+
     
     
     VBox monday = new VBox(0);
@@ -155,9 +144,7 @@ sunday.getChildren().addAll(
     calendar.getChildren().addAll(sunday,monday,tuesday,wednsday,thursday);
     scrollPane2.setContent(calendar);
 
-    VBox testBox = new VBox();
-    testBox.setStyle(cssLayout);
-
+  
 
     
  
