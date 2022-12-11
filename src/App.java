@@ -114,19 +114,26 @@ public class App extends Application {
    
                   
 
-    BorderPane layout2 = new BorderPane();
-    layout2.setTop(label2);
-    ScrollPane scrollPane2 = new ScrollPane();
-    layout2.setRight(scrollPane2);
+    BorderPane pane2 = new BorderPane();
+    pane2.setTop(label2);
+    ScrollPane scollpaneBasket = new ScrollPane();
+    pane2.setRight(scollpaneBasket);
     
-    scrollPane2.setContent(coursesColumn);
+    scollpaneBasket.setContent(coursesColumn);
     
     System.out.println(basketCourses.size());
 
-    layout2.setPadding(new Insets(10,10,10,01));
+    pane2.setPadding(new Insets(10,10,10,01));
     
 
-    scene2 = new Scene(layout2, 800, 600);
+
+
+
+
+
+
+
+    scene2 = new Scene(pane2, 1200, 800);
     
     primaryStage.setScene(scene1);
     primaryStage.show();
