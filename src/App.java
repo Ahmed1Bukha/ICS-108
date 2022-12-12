@@ -32,7 +32,14 @@ public class App extends Application {
   List<Course> coursesOffered = Course.coursesPossible("CourseOffering.csv", "FinishedCourses.csv", "DegreePlan.csv");
   List<Course> basketCourses = new ArrayList<>();
 
+ 
+  List<Course> sunday = new ArrayList<>();
+  List<Course> monday = new ArrayList<>();
+  List<Course> tuesday = new ArrayList<>();
+  List<Course> wednsday = new ArrayList<>();
+  List<Course> thursday = new ArrayList<>();
   List<List> days = new ArrayList<>();
+
   
 
   List<Course> jadwal = new ArrayList<>();
@@ -43,7 +50,17 @@ public class App extends Application {
 
   @Override // Override the start method in the Application class
   public void start(Stage primaryStage) {
-   
+
+    Drawer drawer = new Drawer(primaryStage);
+   days.add(sunday);
+   days.add(monday);
+   days.add(tuesday);
+   days.add(wednsday);
+   days.add(thursday);
+
+
+
+
     primaryStage.setTitle("My First JavaFX GUI");
     /// Needs to be cleaner pleeeeeeeeeeeeeeease pleeeeeeeeease
     ScrollPane scrollPane1 = new ScrollPane();
@@ -109,7 +126,7 @@ public class App extends Application {
     // Scene 2 Abdulla's work
 
  
-
+    
 
    
    
@@ -121,29 +138,13 @@ public class App extends Application {
                   
                    "-fx-border-width: 3;\n";
     HBox calendar = new HBox();
-    calendar.setMaxWidth(1200);
-    VBox sunday = new VBox(0);
+    
+    calendar.setPrefWidth(1200);
+    calendar.setMinHeight(2000);
 
-  
-    
 
-    
-    
-    VBox monday = new VBox(0);
-    monday.setStyle(cssLayout);
-    monday.setMinWidth(200);
+
    
-    VBox tuesday = new VBox();
-    tuesday.setStyle(cssLayout);
-    tuesday.setMinWidth(200);
-
-    VBox wednsday = new VBox();
-    wednsday.setStyle(cssLayout);
-    wednsday.setMinWidth(200);
-
-    VBox thursday = new VBox();
-    thursday.setStyle(cssLayout);
-    thursday.setMinWidth(200);
 
 
 
@@ -151,8 +152,11 @@ public class App extends Application {
     
 
 
-    calendar.getChildren().addAll(sunday,monday,tuesday,wednsday,thursday);
+   
+
     scrollPane2.setContent(calendar);
+    
+
 
   
 
@@ -161,7 +165,18 @@ public class App extends Application {
     
     calendar.setStyle(cssLayout);
     calendar.setPadding(new Insets(0));
+
+    pane2.setCenter(scrollPane2);
+
+
+
+
     Button button2 = new Button("Go to scene 1");
+    button2.setOnAction(e->{
+      coursesOffered = Course.coursesPossible("CourseOffering.csv", "FinishedCourses.csv", "DegreePlan.csv");
+      primaryStage.setScene(scene1);
+      basketCourses.removeAll(basketCourses);
+    });
 
 
 
@@ -175,7 +190,7 @@ public class App extends Application {
       courseCard.getChildren().addAll((new Label(basketCourses.get(i).getTitle()+" "+basketCourses.get(i).getActivity())),
       new Label(basketCourses.get(i).getDays()),
       //there is a problem with this button, I'll fix it 
-      components.AddRemoveBasket(basketCourses.get(i),jadwal,basketCourses,primaryStage,scene2,coursesColumn,courseCard));
+      components.AddRemoveBasket(basketCourses.get(i),jadwal,basketCourses,coursesColumn,courseCard,days,calendar,drawer));
 
       courseCard.setAlignment(Pos.CENTER);
       coursesColumn.getChildren().addAll(courseCard);
@@ -185,11 +200,11 @@ public class App extends Application {
    
                   
 
-    BorderPane pane2 = new BorderPane();
-    pane2.setTop(label2);
+   
+
     ScrollPane scollpaneBasket = new ScrollPane();
     pane2.setRight(scollpaneBasket);
-    
+    coursesColumn.setMinWidth(200);
     scollpaneBasket.setContent(coursesColumn);
     
     System.out.println(basketCourses.size());
@@ -204,6 +219,8 @@ public class App extends Application {
 
 
 
+
+    pane2.setBottom(button2);
     scene2 = new Scene(pane2, 1200, 800);
     
     primaryStage.setScene(scene1);

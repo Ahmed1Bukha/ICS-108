@@ -1,13 +1,17 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import javafx.scene.control.Alert.AlertType;
 
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
-
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -53,7 +57,21 @@ public class components {
 
     }
 
-    public static Button AddRemoveBasket(Course course, List<Course> coursesInJadwal,List<Course> coursesInBasket, Stage primaryStage,Scene scene,VBox card,VBox cardsmol) {
+    public static boolean duplicateCourses(Course course, List<List> days){
+        for(int i=0; i< days.size();i++){
+            List<Course> tempCourses = days.get(i);
+
+            for(int j=0; j< tempCourses.size(); j++){
+                if(course.getTitle().split("-")[0].equals(tempCourses.get(j).getTitle().split("-")[0])){
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+        public static Button AddRemoveBasket(Course course, List<Course> coursesInJadwal,List<Course> coursesInBasket, VBox card,VBox cardsmol,List<List> dayLists,HBox calendar,Drawer drawer) {
 
         Button button = new Button("Add");
         
@@ -61,10 +79,33 @@ public class components {
             if (button.getText().equals("Add")) {
                 coursesInJadwal.add(course);
                 coursesInBasket.remove(course);
+                boolean doesConflict=checkConflict(dayLists, course);
+                boolean dublicateCourses = duplicateCourses(course,dayLists);
+                if(doesConflict){
+                    drawer.alertMsg();
+                }
+                else if(dublicateCourses){
+                    drawer.courseDuplicate();
+                }
+                else{
+                    System.out.println("Done1");
+                    calendar.getChildren().clear();
+                    System.out.println("Done2");
+                    calendar.getChildren().addAll(addCourseToJadwal(course, dayLists,drawer,calendar));
+                    System.out.println("Done3");
+                    card.getChildren().remove(cardsmol);
+                }
 
-                card.getChildren().remove(cardsmol);
-                primaryStage.setScene(scene);
-                primaryStage.show();
+
+                
+
+
+
+
+
+                
+              
+                drawer.reDraw();
             }
             
 
@@ -75,12 +116,23 @@ public class components {
 
     }
 
-    public static VBox jadwalButton(Course course, double height){
+    public static VBox jadwalCard(Course course, double height,Drawer drawer,List<List> days,HBox caledar){
        
         Button button = new Button("Del");
         button.setOnAction(e->{
-            System.out.println("Course");
-        });
+        
+                   for(int i=0; i<days.size(); i++){
+                    if(days.get(i).contains(course)){
+                        days.get(i).remove(course);
+                    }
+                   }     
+                   caledar.getChildren().clear();
+                   caledar.getChildren().addAll( addCourseToJadwal(null, days, drawer,caledar)); 
+       
+            
+
+        }
+        );
         VBox vBox = new VBox(0);
         vBox.setMinHeight(height);
         vBox.getChildren().addAll(new Label(course.getTitle()),
@@ -91,11 +143,81 @@ public class components {
         "-fx-border-width: 3;\n";
         vBox.setStyle(cssLayout);
         
-        VBox.setMargin(vBox, new Insets(0));
+    
         return vBox;
     }
 
-    public static List<VBox> columnMaker(List<Course> courses){
+    public static boolean checkConflict(List<List> days,Course course){
+        boolean isConflict=false;
+        char[] courseDays = course.getDays().toCharArray();
+        
+        for(Character day: courseDays){
+            switch(day){
+                case 'U':
+                List<Course> tempoCourses1= days.get(0);
+                for(int i=0; i<tempoCourses1.size();i++){
+                    isConflict = course.courseConflict(tempoCourses1.get(i));
+                    if(isConflict){
+                       return true;
+                    }
+                }
+                break;
+
+                case 'M':
+                List<Course> tempoCourses2= days.get(1);
+                for(int i=0; i<tempoCourses2.size();i++){
+                    isConflict = course.courseConflict(tempoCourses2.get(i));
+                    if(isConflict){
+                        return true;
+                    }
+                }
+                break;
+
+                case 'T':
+                List<Course> tempoCourses3= days.get(2);
+                for(int i=0; i<tempoCourses3.size();i++){
+                    isConflict = course.courseConflict(tempoCourses3.get(i));
+                    if(isConflict){
+                        return true;
+                    }
+                }
+                break;
+
+
+                case 'W':
+                List<Course> tempoCourses4= days.get(3);
+                for(int i=0; i<tempoCourses4.size();i++){
+                    isConflict = course.courseConflict(tempoCourses4.get(i));
+                    if(isConflict){
+                        return true;
+                    }
+                }
+                break;
+                case 'R':
+                List<Course> tempoCourses5= days.get(4);
+                for(int i=0; i<tempoCourses5.size();i++){
+                    isConflict = course.courseConflict(tempoCourses5.get(i));
+                    if(isConflict){
+                        return true;
+                    }
+                }
+                break;
+            
+
+
+            }
+
+       
+
+        }
+        return isConflict;
+
+
+
+    }
+
+    public static List<VBox> columnMaker(List<Course> courses,List<List>days,Drawer drawer,HBox calendar){
+        Collections.sort(courses);
         List<VBox> columnFinal = new ArrayList<>();
         int base=0;
         for(int i=0; i< courses.size(); i++){
@@ -104,7 +226,7 @@ public class components {
                 VBox vBox = new VBox();
                 vBox.setPrefHeight((course.getBeginHour() - base)*2);
                 columnFinal.add(vBox);
-                VBox courseBox = jadwalButton(course, (course.getEndHour()-course.getBeginHour())*2);
+                VBox courseBox = jadwalCard(course, (course.getEndHour()-course.getBeginHour())*2,drawer,days,calendar);
                 columnFinal.add(courseBox);
                 base = course.getEndHour();
 
@@ -119,7 +241,111 @@ public class components {
         return columnFinal;
 
     }
+public static List<VBox> addCourseToJadwal(Course course, List<List> days,Drawer drawer, HBox oldCalendar){
+    VBox sunday = new VBox();
+    VBox monday = new VBox();
+    VBox tuesday = new VBox();
+    VBox wednsday = new VBox();
+    VBox thursday = new VBox();
+    String cssLayout = "-fx-border-color: black;\n" +
+                  
+    "-fx-border-width: 3;\n";
+    sunday.setMinWidth(200);
+    sunday.setStyle(cssLayout);
 
+    monday.setStyle(cssLayout);
+    monday.setPrefWidth(200);
+
+    tuesday.setStyle(cssLayout);
+    tuesday.setPrefWidth(200);
+
+    wednsday.setStyle(cssLayout);
+    wednsday.setPrefWidth(200);
+
+    thursday.setStyle(cssLayout);
+    thursday.setPrefWidth(200);
+    List<VBox> calendar = new ArrayList<>();
+    if(course!= null){
+
+
+   
+
+    
+  
+    
+   
+    char[] courseDays = course.getDays().toCharArray();
+
+    System.out.println(days);
+
+   
+    for(Character day: courseDays){
+        switch(day){
+            case 'U':
+
+            days.get(0).add(course);
+           
+            
+            break;
+
+            case 'M':
+            days.get(1).add(course);
+          
+
+          
+            break;
+
+            case 'T':
+            days.get(2).add(course);
+            
+            break;
+
+
+            case 'W':
+            days.get(3).add(course);
+            
+            break;
+
+
+            case 'R':
+            days.get(4).add(course);
+           
+            break;
+  
+
+
+            
+        }
+
+        System.out.println(days);
+
+
+      
+
+        
+
+    }
+}
+    sunday.getChildren().addAll(columnMaker(days.get(0),days,drawer,oldCalendar));
+    monday.getChildren().addAll(columnMaker(days.get(1),days,drawer,oldCalendar));
+    tuesday.getChildren().addAll(columnMaker(days.get(2),days,drawer,oldCalendar));
+    wednsday.getChildren().addAll(columnMaker(days.get(3),days,drawer,oldCalendar));
+    thursday.getChildren().addAll(columnMaker(days.get(4),days,drawer,oldCalendar));
+
+    calendar.add(sunday);
+    calendar.add(monday);
+    calendar.add(tuesday);
+    calendar.add(wednsday);
+    calendar.add(thursday);
+   
+    drawer.reDraw();;
+    return calendar;
+    
+
+
+
+
+}
 
  
 
