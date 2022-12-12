@@ -128,7 +128,7 @@ public class Course implements Comparable<Course>{
             List<String> finishedCourse = new ArrayList<String>();
             List<String> courseAvailable = new ArrayList<String>();
             // It will check every finished course.
-
+            BufferedReader br = new BufferedReader(new FileReader(new File(coursesPath)));
             String courseName = "";
             while (finishedCourseScanner.hasNextLine()) {
 
@@ -148,8 +148,10 @@ public class Course implements Comparable<Course>{
             }
             System.out.println(courseAvailable);
 
-            while (courseOfferingScanner.hasNextLine()) {
-                String tempo = courseOfferingScanner.nextLine();
+
+            String availalbe;
+            while ((availalbe = br.readLine()) != null) {
+                String tempo =availalbe;
                 if (courseAvailable.contains(tempo.split(",")[0].split("-")[0])) {
                     String[] tempoArray = tempo.split(",");
                     Courses.add(
