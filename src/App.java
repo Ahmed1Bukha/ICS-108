@@ -23,7 +23,8 @@ import javafx.scene.control.TableView;
 
 
 import java.util.*;
-
+//Some notes:
+// Calendar == jadwal on the left(Just like google calendae.)
 
 public class App extends Application {
  

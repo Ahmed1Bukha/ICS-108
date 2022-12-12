@@ -28,6 +28,7 @@ public class components {
         return titleLabel;
     }
 
+    //This is the method for the buttons in page1.
     public static Button AddRemoveButton(Course course, List<Course> coursesInBasket) {
 
         Button button = new Button("Add");
@@ -56,7 +57,7 @@ public class components {
         return button;
 
     }
-
+    //This method will be used to check whether the user is tryint to enter a course that has another sections been added to it.
     public static boolean duplicateCourses(Course course, List<List> days){
         for(int i=0; i< days.size();i++){
             List<Course> tempCourses = days.get(i);
@@ -70,29 +71,39 @@ public class components {
         }
         return false;
     }
-
+        //This method for creating a card that will be added to the basket with the functinoality of adding to schudgle.
         public static Button AddRemoveBasket(Course course, List<Course> coursesInJadwal,List<Course> coursesInBasket, VBox card,VBox cardsmol,List<List> dayLists,HBox calendar,Drawer drawer) {
 
         Button button = new Button("Add");
         
         button.setOnAction(e -> {
             if (button.getText().equals("Add")) {
-                coursesInJadwal.add(course);
-                coursesInBasket.remove(course);
+               
                 boolean doesConflict=checkConflict(dayLists, course);
                 boolean dublicateCourses = duplicateCourses(course,dayLists);
+                //Check if it conflicts with another section.
                 if(doesConflict){
+                    //Display msg.
                     drawer.alertMsg();
                 }
+                //Check if another section is already in.
                 else if(dublicateCourses){
+                     //Display msg.
                     drawer.courseDuplicate();
                 }
+                //Start creating the card for the basket.
                 else{
+                    coursesInJadwal.add(course);
+                    coursesInBasket.remove(course);
+
                     System.out.println("Done1");
+                    //Remove old children to add new ones.
                     calendar.getChildren().clear();
                     System.out.println("Done2");
+                    //pass the new course to be added to the jadwal.
                     calendar.getChildren().addAll(addCourseToJadwal(course, dayLists,drawer,calendar));
                     System.out.println("Done3");
+                    //Remove the card that has been pressed from basket.
                     card.getChildren().remove(cardsmol);
                 }
 
@@ -104,7 +115,7 @@ public class components {
 
 
                 
-              
+                //Setstate.
                 drawer.reDraw();
             }
             
@@ -115,18 +126,19 @@ public class components {
         return button;
 
     }
-
+    //This method will create the card in jadawa, it will take in considration the lenght of the course and what time it should be, so it takes in perspictive the breaks between classes.
     public static VBox jadwalCard(Course course, double height,Drawer drawer,List<List> days,HBox caledar){
        
         Button button = new Button("Del");
         button.setOnAction(e->{
-        
+                //Remove from jadwal when clicked.
                    for(int i=0; i<days.size(); i++){
                     if(days.get(i).contains(course)){
                         days.get(i).remove(course);
                     }
                    }     
                    caledar.getChildren().clear();
+                   //Redraw the jadwal.
                    caledar.getChildren().addAll( addCourseToJadwal(null, days, drawer,caledar)); 
        
             
@@ -146,12 +158,13 @@ public class components {
     
         return vBox;
     }
-
+    //This method is for checking if 2 courses will be conflict, this has been done using comparator in class Course.
     public static boolean checkConflict(List<List> days,Course course){
         boolean isConflict=false;
         char[] courseDays = course.getDays().toCharArray();
         
         for(Character day: courseDays){
+            //Check for each day.
             switch(day){
                 case 'U':
                 List<Course> tempoCourses1= days.get(0);
@@ -215,7 +228,7 @@ public class components {
 
 
     }
-
+        //This is the method that will generate a column full of cards for courses.
     public static List<VBox> columnMaker(List<Course> courses,List<List>days,Drawer drawer,HBox calendar){
         Collections.sort(courses);
         List<VBox> columnFinal = new ArrayList<>();
@@ -241,6 +254,8 @@ public class components {
         return columnFinal;
 
     }
+
+    //This method will draw the calendar again with the new changes, either delete or add course.
 public static List<VBox> addCourseToJadwal(Course course, List<List> days,Drawer drawer, HBox oldCalendar){
     VBox sunday = new VBox();
     VBox monday = new VBox();
