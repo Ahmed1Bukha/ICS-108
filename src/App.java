@@ -1,5 +1,4 @@
 import javax.sound.sampled.SourceDataLine;
-
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.application.Application;
@@ -21,7 +20,14 @@ import javafx.stage.Stage;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.*;
 //Some notes:
 // Calendar == jadwal on the left(Just like google calendae.)
@@ -46,7 +52,6 @@ public class App extends Application {
   List<Course> jadwal = new ArrayList<>();
 
   
-  VBox coursesColumn = new VBox();
 
 
   @Override // Override the start method in the Application class
@@ -66,6 +71,7 @@ public class App extends Application {
     /// Needs to be cleaner pleeeeeeeeeeeeeeease pleeeeeeeeease
     ScrollPane scrollPane1 = new ScrollPane();
     Button button1 = new Button("Next");
+    Button startWithSavedButton = new Button("Start with a saved schedule");
     BorderPane pane1 = new BorderPane();
     Label title = new Label("Add to Basket");
 
@@ -104,6 +110,32 @@ public class App extends Application {
       vbox.getChildren().add(courseRow);
     }
     
+    startWithSavedButton.setOnAction(e->{
+      try {
+        FileInputStream file = new FileInputStream(new File("saved.dat"));
+        ObjectInputStream input = new ObjectInputStream(file);
+        Course course = (Course) input.readObject();
+        while (course != null) {
+          if(!basketCourses.contains(course)){
+            basketCourses.add(course);
+            course = (Course) input.readObject();
+          }
+          course = (Course) input.readObject();
+        }
+        
+      }
+      catch (FileNotFoundException e1) {
+            
+        System.out.println("File not found!");
+       } catch (IOException e1) {
+        
+        System.out.println("IOException ");
+       } catch (ClassNotFoundException e4) {
+  
+         System.out.println("class not found");
+     } 
+           
+    });
 
     title.setFont(new Font("Arial", 50));
     button1.setOnAction(e -> primaryStage.setScene(scene2));
@@ -112,9 +144,11 @@ public class App extends Application {
     ////// will fix and design it later
     pane1.setTop(title);
     pane1.setBottom(button1);
+    pane1.setTop(startWithSavedButton);
     scrollPane1.setContent(vbox);
     pane1.setCenter(scrollPane1);
 
+    BorderPane.setAlignment(startWithSavedButton, Pos.TOP_RIGHT);
     BorderPane.setAlignment(button1, Pos.TOP_RIGHT);
     BorderPane.setAlignment(title, Pos.CENTER);
     BorderPane.setAlignment(scrollPane1, Pos.CENTER);
@@ -129,9 +163,6 @@ public class App extends Application {
  
     
 
-   
-   
-
 
     BorderPane pane2 = new BorderPane();
     ScrollPane scrollPane2 = new ScrollPane();
@@ -145,23 +176,10 @@ public class App extends Application {
 
 
 
-   
-
-
-
-
-    
-
-
-   
 
     scrollPane2.setContent(calendar);
     
 
-
-  
-
-    
  
     
     calendar.setStyle(cssLayout);
@@ -181,6 +199,8 @@ public class App extends Application {
 
 
 
+    VBox coursesColumn = new VBox();
+
     button1.setOnAction(e ->{ 
       primaryStage.setScene(scene2);
 
@@ -190,6 +210,7 @@ public class App extends Application {
      
       courseCard.getChildren().addAll((new Label(basketCourses.get(i).getTitle()+" "+basketCourses.get(i).getActivity())),
       new Label(basketCourses.get(i).getDays()),
+      //new Label(String.valueOf(basketCourses.get(i).getBeginHour()+" - "+basketCourses.get(i).getEndHour())),
       //there is a problem with this button, I'll fix it 
       components.AddRemoveBasket(basketCourses.get(i),jadwal,basketCourses,coursesColumn,courseCard,days,calendar,drawer));
 
@@ -202,26 +223,54 @@ public class App extends Application {
                   
 
    
+    Button saveButton = new Button("Save Schedule");
 
     ScrollPane scollpaneBasket = new ScrollPane();
     pane2.setRight(scollpaneBasket);
     coursesColumn.setMinWidth(200);
     scollpaneBasket.setContent(coursesColumn);
     
-    System.out.println(basketCourses.size());
 
     pane2.setPadding(new Insets(10,10,10,01));
     
 
+// save to binary button
+
+saveButton.setOnAction(e ->{
+
+  try {
+    FileOutputStream output = new FileOutputStream("saved.dat");
+    ObjectOutputStream obj = new ObjectOutputStream(output);
+    for(int j=0;j<basketCourses.size();j++){
+      obj.writeObject(basketCourses.get(j));
+      obj.writeObject(jadwal.get(j));
+    }
+    
+     
+      
+    
+   
+
+  } catch (FileNotFoundException e1) {
+    
+   System.out.println("File not found!");
+  } catch (IOException e1) {
+   
+   System.out.println("IOException ");
+  }
+
+
+
+});
 
 
 
 
 
-
-
-
-    pane2.setBottom(button2);
+    
+    pane2.setAlignment(saveButton, Pos.BOTTOM_LEFT);
+    pane2.setBottom(saveButton);
+    pane2.setTop(button2);
     scene2 = new Scene(pane2, 1200, 800);
     
     primaryStage.setScene(scene1);

@@ -2,12 +2,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public class Course implements Comparable<Course>{
+public class Course implements Comparable<Course> ,Serializable{
 
     private String title;
     private String activity;

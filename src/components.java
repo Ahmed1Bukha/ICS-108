@@ -35,7 +35,7 @@ public class components {
         button.setStyle("-fx-background-color: green; -fx-text-fill: white;");
         button.setMinWidth(60);
         button.setOnAction(e -> {
-            if (button.getText().equals("Add")) {
+            if (button.getText().equals("Add")){
                 coursesInBasket.add(course);
                 button.setText("Remove");
                 button.setStyle("-fx-background-color: red; -fx-text-fill: white;");
