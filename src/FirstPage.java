@@ -19,9 +19,16 @@ public class FirstPage {
     public static Scene scene(List<Course> basketCourses, Stage primaryStage, Drawer drawer) {
         Scene scene1;
         ScrollPane scrollPane1 = new ScrollPane();
-        Button button1 = new Button("Next");
+        Button button1 = new Button("Schedule");
+        button1.setFont(new Font(25));
+        button1.setMinHeight(40);
+        button1.setMaxWidth(500);
+        button1.setPadding(new Insets(20));
+
+        button1.setStyle("-fx-background-color: black; -fx-text-fill: white;");
         BorderPane pane1 = new BorderPane();
         Label title = new Label("Add to Basket");
+
         title.setStyle("-fx-text-fill: white");
         title.setAlignment(Pos.CENTER);
         List<Course> coursesOffered = Course.coursesPossible("CourseOffering.csv", "FinishedCourses.csv",
@@ -55,34 +62,37 @@ public class FirstPage {
                     components.itemCard(coursesOffered.get(i).getInstructor()),
                     components.itemCard(coursesOffered.get(i).getTime()),
                     components.itemCard("      " + coursesOffered.get(i).getDays()),
-                    components.itemCard("                                    "),
-                    components.AddRemoveButton(coursesOffered.get(i), basketCourses)
+                    components.itemCard("                                    ")
 
             );
-            HBox.setHgrow(components.itemCard("  " + coursesOffered.get(i).getTitle()), Priority.ALWAYS);
+
+            BorderPane pane = new BorderPane();
+            pane.setCenter(courseRow);
+            pane.setRight(components.AddRemoveButton(coursesOffered.get(i), basketCourses));
+            pane.setPadding(new Insets(0, 10, 0, 0));
 
             ;
-            vbox.getChildren().add(courseRow);
+            vbox.getChildren().add(pane);
         }
 
         title.setFont(new Font("Arial", 50));
 
-        pane1.setPadding(new Insets(4, 4, 4, 4));
+        pane1.setPadding(new Insets(15, 20, 15, 20));
         scrollPane1.fitToWidthProperty().set(true);
+        scrollPane1.setPadding(new Insets(20, 0, 20, 0));
         ////// will fix and design it later
         VBox topBox = new VBox();
         topBox.getChildren().addAll(title, courseOfferingTitles);
+        topBox.setSpacing(15);
         topBox.setAlignment(Pos.BASELINE_CENTER);
         pane1.setTop(topBox);
         pane1.setBottom(button1);
-        pane1.setLayoutX(15);
-        pane1.setLayoutY(15);
 
         scrollPane1.setContent(vbox);
 
         pane1.setCenter(scrollPane1);
 
-        BorderPane.setAlignment(button1, Pos.TOP_RIGHT);
+        BorderPane.setAlignment(button1, Pos.CENTER);
         BorderPane.setAlignment(title, Pos.CENTER);
         BorderPane.setAlignment(scrollPane1, Pos.CENTER);
         scene1 = new Scene(pane1, 1200, 600);

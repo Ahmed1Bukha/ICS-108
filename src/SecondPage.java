@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import java.util.*;
 
@@ -52,8 +53,14 @@ public class SecondPage {
 
         calendar.setStyle(cssLayout);
         calendar.setPadding(new Insets(0));
-        Button button2 = new Button("Go to scene 1");
+        Button button2 = new Button("Main Page");
         button2.setOnAction(arg0);
+        button2.setFont(new Font(25));
+        button2.setMinHeight(40);
+        button2.setMaxWidth(500);
+        button2.setStyle("-fx-background-color: black; -fx-text-fill: white;");
+        button2.setPadding(new Insets(20));
+        BorderPane.setAlignment(button2, Pos.CENTER);
 
         ScrollPane scollpaneBasket = new ScrollPane();
         scollpaneBasket.setMinWidth(300);
@@ -63,7 +70,7 @@ public class SecondPage {
 
         System.out.println(basketCourses.size());
 
-        pane2.setPadding(new Insets(10, 10, 10, 01));
+        pane2.setPadding(new Insets(30));
 
         pane2.setBottom(button2);
         scene2 = new Scene(pane2, 1200, 600);

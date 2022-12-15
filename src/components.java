@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -26,6 +27,7 @@ public class components {
         Button button = new Button("Add");
         button.setStyle("-fx-background-color: green; -fx-text-fill: white;");
         button.setMinWidth(60);
+
         button.setOnAction(e -> {
             if (button.getText().equals("Add")) {
                 coursesInBasket.add(course);
