@@ -3,11 +3,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public class Course implements Comparable<Course>{
+public class Course implements Comparable<Course> {
 
     private String title;
     private String activity;
@@ -58,31 +57,29 @@ public class Course implements Comparable<Course>{
         return this.title;
     }
 
+    public boolean courseConflict(Course course) {
+        boolean isConflict = false;
 
-    public boolean courseConflict(Course course){
-      boolean isConflict = false;
-
-      if(this.beginHour == course.beginHour){
-        isConflict = true;
-      }
-        else if(this.beginHour > course.beginHour && this.endTime<course.beginHour){
+        if (this.beginHour == course.beginHour) {
+            isConflict = true;
+        } else if (this.beginHour > course.beginHour && this.endTime < course.beginHour) {
             System.out.println(1);
             isConflict = true;
-        }
-        else if(this.beginHour  > course.endTime &&  this.beginHour< course.beginHour){
-            isConflict=true;
+        } else if (this.beginHour > course.endTime && this.beginHour < course.beginHour) {
+            isConflict = true;
             System.out.println(2);
         }
 
-        else if(this.beginHour> course.beginHour && this.endTime< course.endTime){
-            isConflict= true;
+        else if (this.beginHour > course.beginHour && this.endTime < course.endTime) {
+            isConflict = true;
             System.out.println(3);
         }
         return isConflict;
 
     }
-    public void setCells(String time){
-        String []tempo = time.split("-");
+
+    public void setCells(String time) {
+        String[] tempo = time.split("-");
         String beginTime = tempo[0];
         int beginHour = Integer.parseInt(beginTime.substring(0, 2));
         int beginMin = Integer.parseInt(beginTime.substring(2, 4));
@@ -91,30 +88,28 @@ public class Course implements Comparable<Course>{
         int endHour = Integer.parseInt(endTime.substring(0, 2));
         int endMin = Integer.parseInt(endTime.substring(2, 4));
 
-        System.out.println(beginMin+"begin");
-        System.out.println(endMin+"end");
+        System.out.println(beginMin + "begin");
+        System.out.println(endMin + "end");
 
+        this.beginHour = ((beginHour - 7) * 60) + (beginMin);
+        this.endTime = ((endHour - 7) * 60) + (endMin);
 
-  
+        this.totalTime = (((endMin + ((endHour - 7) * 60)) - (beginMin + ((beginHour - 7) * 60)))) / 12;
 
-    this.beginHour = ((beginHour-7)*60)+(beginMin);
-    this.endTime = ((endHour-7)*60)+(endMin);
+        System.out.println(this.totalTime);
 
-    this.totalTime = (((endMin+((endHour-7)*60)) - (beginMin+((beginHour-7)*60))))/12;
-
-    System.out.println(this.totalTime);
-     
     }
 
-    public int totalHours(){
+    public int totalHours() {
         System.out.println(totalTime);
         return this.totalTime;
     }
 
-    public int getBeginHour(){
+    public int getBeginHour() {
         return this.beginHour;
     }
-    public int getEndHour(){
+
+    public int getEndHour() {
         return this.endTime;
     }
 
@@ -148,10 +143,9 @@ public class Course implements Comparable<Course>{
             }
             System.out.println(courseAvailable);
 
-
             String availalbe;
             while ((availalbe = br.readLine()) != null) {
-                String tempo =availalbe;
+                String tempo = availalbe;
                 if (courseAvailable.contains(tempo.split(",")[0].split("-")[0])) {
                     String[] tempoArray = tempo.split(",");
                     Courses.add(
@@ -170,19 +164,14 @@ public class Course implements Comparable<Course>{
 
     }
 
-
-
-    
     @Override
     public int compareTo(Course o) {
-       
-        if(this.getBeginHour()> o.getBeginHour()){
+
+        if (this.getBeginHour() > o.getBeginHour()) {
             return 1;
-        }
-        else if(this.getBeginHour()<o.getBeginHour()){
+        } else if (this.getBeginHour() < o.getBeginHour()) {
             return -1;
-        }
-        else{
+        } else {
             return 0;
         }
     }
