@@ -23,11 +23,19 @@ public class SecondPage {
         BorderPane pane2 = new BorderPane();
         Scene scene2;
 
+
+        Map<String,List<Course>>schuMap = new LinkedHashMap<String,List<Course>>();
         List<Course> sunday = new ArrayList<>();
         List<Course> monday = new ArrayList<>();
         List<Course> tuesday = new ArrayList<>();
         List<Course> wednsday = new ArrayList<>();
         List<Course> thursday = new ArrayList<>();
+
+        schuMap.put("Sunday",sunday);
+        schuMap.put("Monday",monday);
+        schuMap.put("Tuesday",tuesday);
+        schuMap.put("Wednsday",wednsday);
+        schuMap.put("Thursday",thursday);
         ArrayList<List> days = new ArrayList<>();
 
         days.add(sunday);
@@ -78,7 +86,7 @@ public class SecondPage {
                     new Label(basketCourses.get(i).getDays()),
                     // there is a problem with this button, I'll fix it
                     components.AddRemoveBasket(basketCourses.get(i), jadwal, basketCourses, coursesColumn, courseCard,
-                            days,
+                            schuMap,
                             calendar, drawer));
 
             courseCard.setAlignment(Pos.CENTER);
