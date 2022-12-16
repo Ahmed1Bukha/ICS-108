@@ -168,6 +168,7 @@ components.addCourseToJadwal(null, schuMap, drawer, calendar)
 
             courseCard.getChildren().addAll(
                     components.itemCard(basketCourses.get(i).getTitle() + " " + basketCourses.get(i).getActivity()),
+                    components.itemCard( basketCourses.get(i).getTime()),
                     components.itemCard(basketCourses.get(i).getDays()),
                     // there is a problem with this button, I'll fix it
                     components.AddRemoveBasket(basketCourses.get(i),  basketCourses, coursesColumn, courseCard,
