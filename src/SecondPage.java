@@ -103,7 +103,7 @@ public class SecondPage {
         calendar.setPrefHeight(2000);
         calendar.setPadding(new Insets(0, 0, 0, 0));
         scrollPane2.setMaxWidth(900);
-
+       drawer.setCalendar(calendar);
         calendar.getChildren().addAll(
 components.addCourseToJadwal(null, schuMap, drawer, calendar)
 
@@ -178,7 +178,7 @@ components.addCourseToJadwal(null, schuMap, drawer, calendar)
             coursesColumn.getChildren().addAll(courseCard);
           
         }
-        pane2.setTop(labelDays);
+       
         scene2 = new Scene(pane2, 1200, 600);
         return scene2;
     }
