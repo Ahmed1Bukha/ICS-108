@@ -1,5 +1,11 @@
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
 import javafx.scene.control.ScrollPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +25,9 @@ public class FirstPage {
     public static Scene scene(List<Course> basketCourses, Stage primaryStage, Drawer drawer) {
         Scene scene1;
         ScrollPane scrollPane1 = new ScrollPane();
+        Map<String,List<Course>>schuMap = new LinkedHashMap<String,List<Course>>();
         Button button1 = new Button("Schedule");
+        Button startWithSaved= new Button("Start with saved Schedule");
         button1.setFont(new Font(25));
         button1.setMinHeight(40);
         button1.setMaxWidth(500);
@@ -100,9 +108,37 @@ public class FirstPage {
             primaryStage.setScene(SecondPage.Scene(ee -> {
                 primaryStage.setScene(scene1);
                 basketCourses.removeAll(basketCourses);
-            }, basketCourses, drawer));
+            }, basketCourses, drawer,schuMap));
         });
+
+
+        
+        pane1.setTop(startWithSaved);
+        pane1.setAlignment(startWithSaved, Pos.TOP_RIGHT);
+        startWithSaved.setOnAction(e ->{
+            try  {
+                FileInputStream file = new FileInputStream("saved.dat");
+                ObjectInputStream inputObj = new ObjectInputStream(file);
+
+                Map<String,List<Course>> newMap = (Map<String,List<Course>>) inputObj.readObject();
+                for(String key :newMap.keySet()){
+                   schuMap.put(key,newMap.get(key));
+                   System.out.println(newMap);
+                }
+                
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (ClassNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            
+
+        });
+
+
         return scene1;
         
     }
+   
 }

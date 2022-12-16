@@ -15,17 +15,23 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 public class SecondPage {
 
     public static Scene Scene(javafx.event.EventHandler<javafx.event.ActionEvent> arg0, List<Course> basketCourses,
-            Drawer drawer) {
+            Drawer drawer, Map<String,List<Course>>schuMap) {
         BorderPane pane2 = new BorderPane();
         Scene scene2;
 
-
-        Map<String,List<Course>>schuMap = new LinkedHashMap<String,List<Course>>();
+        
+       if(!schuMap.containsKey("Sunday")){
         List<Course> sunday = new ArrayList<>();
         List<Course> monday = new ArrayList<>();
         List<Course> tuesday = new ArrayList<>();
@@ -37,13 +43,14 @@ public class SecondPage {
         schuMap.put("Tuesday",tuesday);
         schuMap.put("Wednsday",wednsday);
         schuMap.put("Thursday",thursday);
-        ArrayList<List> days = new ArrayList<>();
+       }
+       else{
+        System.out.println("lmfao");
+       }
+       
+       
 
-        days.add(sunday);
-        days.add(monday);
-        days.add(tuesday);
-        days.add(wednsday);
-        days.add(thursday);
+
 
         List<Course> jadwal = new ArrayList<>();
         VBox coursesColumn = new VBox();
@@ -61,12 +68,36 @@ public class SecondPage {
         calendar.setMinHeight(2000);
         calendar.setPadding(new Insets(0, 20, 0, 20));
         scrollPane2.setMaxWidth(900);
+        calendar.getChildren().addAll(
+components.addCourseToJadwal(null, schuMap, drawer, calendar)
 
+        );
         scrollPane2.setContent(calendar);
 
         calendar.setPadding(new Insets(0));
-        Button button2 = new Button("Main Page");
-        button2.setOnAction(arg0);
+        Button button2 = new Button("Save Schedule");
+                
+        button2.setOnAction(e ->{
+            try {
+                FileOutputStream output = new FileOutputStream("saved.dat");
+                ObjectOutputStream obj = new ObjectOutputStream(output);
+                obj.writeObject(schuMap);
+                System.out.println("saved!");
+
+
+            } catch (FileNotFoundException e1) {
+               System.out.println("File not found");
+            } catch (IOException e1) {
+              
+                e1.printStackTrace();
+            }
+        });
+
+
+       
+
+
+
         button2.setFont(new Font(25));
         button2.setMinHeight(40);
         button2.setMaxWidth(500);
