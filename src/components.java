@@ -3,8 +3,11 @@ import java.util.Collections;
 import java.util.List;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -15,8 +18,8 @@ public class components {
     public static Label itemCard(String title) {
         Label titleLabel = new Label(title);
         titleLabel.setTextFill(Color.WHITE);
+        titleLabel.setPadding(new Insets(0, 0, 10, 0));
         titleLabel.setFont(new Font("Roboto", 18));
-        titleLabel.setMaxWidth(200);
 
         return titleLabel;
     }
@@ -72,6 +75,9 @@ public class components {
             VBox card, VBox cardsmol, List<List> dayLists, HBox calendar, Drawer drawer) {
 
         Button button = new Button("Add");
+        button.setStyle("-fx-background-color: black; -fx-text-fill: white;");
+        button.setMinWidth(70);
+        button.setMinHeight(20);
 
         button.setOnAction(e -> {
             if (button.getText().equals("Add")) {
@@ -120,7 +126,10 @@ public class components {
     // the breaks between classes.
     public static VBox jadwalCard(Course course, double height, Drawer drawer, List<List> days, HBox caledar) {
 
-        Button button = new Button("Del");
+        Button button = new Button("Delete");
+        button.setStyle("-fx-background-color: black; -fx-text-fill: white;");
+        button.setMinWidth(70);
+        button.setMinHeight(20);
         button.setOnAction(e -> {
             // Remove from jadwal when clicked.
             for (int i = 0; i < days.size(); i++) {
@@ -136,14 +145,19 @@ public class components {
         });
         VBox vBox = new VBox(0);
         vBox.setMinHeight(height);
-        vBox.getChildren().addAll(new Label(course.getTitle()),
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(components.itemCard(course.getTitle()),
                 button);
-        String cssLayout = "-fx-border-color: black;\n" +
-                "-fx-border-insets: 5;\n" +
-                "-fx-border-width: 3;\n";
-        vBox.setStyle(cssLayout);
+        // String cssLayout = "-fx-border-color: black;\n" +
+        // "-fx-border-insets: 5;\n" +
+        // "-fx-border-width: 3;\n";
+        vBox.setStyle("-fx-background-color: green");
 
-        return vBox;
+        VBox pane = new VBox();
+        pane.setPadding(new Insets(10));
+        pane.getChildren().add(vBox);
+
+        return pane;
     }
 
     // This method is for checking if 2 courses will be conflict, this has been done
@@ -237,27 +251,38 @@ public class components {
     // or add course.
     public static List<VBox> addCourseToJadwal(Course course, List<List> days, Drawer drawer, HBox oldCalendar) {
         VBox sunday = new VBox();
+
         VBox monday = new VBox();
         VBox tuesday = new VBox();
         VBox wednsday = new VBox();
         VBox thursday = new VBox();
+        sunday.getChildren().add(components.itemCard("Sunday"));
+        monday.getChildren().add(components.itemCard("Monday"));
+        tuesday.getChildren().add(components.itemCard("Tuesday"));
+        wednsday.getChildren().add(components.itemCard("Wednesday"));
+        thursday.getChildren().add(components.itemCard("Thursday"));
         String cssLayout = "-fx-border-color: black;\n" +
 
                 "-fx-border-width: 3;\n";
         sunday.setMinWidth(200);
         sunday.setStyle(cssLayout);
+        sunday.setAlignment(Pos.BASELINE_CENTER);
 
         monday.setStyle(cssLayout);
         monday.setPrefWidth(200);
+        monday.setAlignment(Pos.BASELINE_CENTER);
 
         tuesday.setStyle(cssLayout);
         tuesday.setPrefWidth(200);
+        tuesday.setAlignment(Pos.BASELINE_CENTER);
 
         wednsday.setStyle(cssLayout);
         wednsday.setPrefWidth(200);
+        wednsday.setAlignment(Pos.BASELINE_CENTER);
 
         thursday.setStyle(cssLayout);
         thursday.setPrefWidth(200);
+        thursday.setAlignment(Pos.BASELINE_CENTER);
         List<VBox> calendar = new ArrayList<>();
         if (course != null) {
 

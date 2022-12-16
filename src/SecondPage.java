@@ -40,18 +40,22 @@ public class SecondPage {
         List<Course> jadwal = new ArrayList<>();
         VBox coursesColumn = new VBox();
         ScrollPane scrollPane2 = new ScrollPane();
-        String cssLayout = "-fx-border-color: black;\n" +
-
-                "-fx-border-width: 3;\n";
+        ScrollPane scrollPaneBasket = new ScrollPane();
         HBox calendar = new HBox();
+        pane2.setStyle("-fx-background-color: gray");
+        scrollPaneBasket.setStyle("-fx-background-color: gray");
+        scrollPane2.setStyle("-fx-background-color: gray");
+        calendar.setStyle("-fx-background-color: gray ; -fx-border-color: black; -fx-border-width: 3;");
+        scrollPane2.setPadding(new Insets(20, 0, 20, 0));
+        scrollPaneBasket.setPadding(new Insets(20, 0, 20, 0));
 
-        calendar.setPrefWidth(900);
+        calendar.setPrefWidth(800);
         calendar.setMinHeight(2000);
+        calendar.setPadding(new Insets(0, 20, 0, 20));
         scrollPane2.setMaxWidth(900);
 
         scrollPane2.setContent(calendar);
 
-        calendar.setStyle(cssLayout);
         calendar.setPadding(new Insets(0));
         Button button2 = new Button("Main Page");
         button2.setOnAction(arg0);
@@ -62,27 +66,31 @@ public class SecondPage {
         button2.setPadding(new Insets(20));
         BorderPane.setAlignment(button2, Pos.CENTER);
 
-        ScrollPane scollpaneBasket = new ScrollPane();
-        scollpaneBasket.setMinWidth(300);
-        pane2.setRight(scollpaneBasket);
+        scrollPaneBasket.setMinWidth(300);
+        pane2.setRight(scrollPaneBasket);
         coursesColumn.setMinWidth(300);
-        scollpaneBasket.setContent(coursesColumn);
+        coursesColumn.setPadding(new Insets(20, 10, 20, 10));
+        coursesColumn.setSpacing(10);
+        scrollPaneBasket.setContent(coursesColumn);
 
         System.out.println(basketCourses.size());
 
-        pane2.setPadding(new Insets(30));
+        // pane2.setPadding(new Insets(30));
+        pane2.setPadding(new Insets(15, 20, 15, 20));
 
         pane2.setBottom(button2);
-        scene2 = new Scene(pane2, 1200, 600);
 
         pane2.setCenter(scrollPane2);
         for (int i = 0; i < basketCourses.size(); i++) {
+            // BorderPane pane= new BorderPane();
             VBox courseCard = new VBox();
+            courseCard.setAlignment(Pos.CENTER);
+            courseCard.setStyle("-fx-background-color: gray");
             courseCard.setPadding(new Insets(10, 10, 10, 10));
 
             courseCard.getChildren().addAll(
-                    (new Label(basketCourses.get(i).getTitle() + " " + basketCourses.get(i).getActivity())),
-                    new Label(basketCourses.get(i).getDays()),
+                    components.itemCard(basketCourses.get(i).getTitle() + " " + basketCourses.get(i).getActivity()),
+                    components.itemCard(basketCourses.get(i).getDays()),
                     // there is a problem with this button, I'll fix it
                     components.AddRemoveBasket(basketCourses.get(i), jadwal, basketCourses, coursesColumn, courseCard,
                             days,
@@ -92,6 +100,7 @@ public class SecondPage {
             coursesColumn.getChildren().addAll(courseCard);
 
         }
+        scene2 = new Scene(pane2, 1200, 600);
         return scene2;
     }
 }

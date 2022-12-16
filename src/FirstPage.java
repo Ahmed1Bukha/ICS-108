@@ -75,7 +75,7 @@ public class FirstPage {
             vbox.getChildren().add(pane);
         }
 
-        title.setFont(new Font("Arial", 50));
+        title.setFont(new Font("Arial", 40));
 
         pane1.setPadding(new Insets(15, 20, 15, 20));
         scrollPane1.fitToWidthProperty().set(true);
