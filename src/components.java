@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -61,7 +62,8 @@ public class components {
             List<Course> tempCourses = entry.getValue();
 
             for (int j = 0; j < tempCourses.size(); j++) {
-                if (course.getTitle().split("-")[0].equals(tempCourses.get(j).getTitle().split("-")[0])) {
+                if (course.getTitle().split("-")[0].equals(tempCourses.get(j).getTitle().split("-")[0]) && course.getActivity().equals(tempCourses.get(j).getActivity())) {
+                    System.out.println();
                     return true;
                 }
             }
@@ -72,7 +74,7 @@ public class components {
 
     // This method for creating a card that will be added to the basket with the
     // functinoality of adding to schudgle.
-    public static Button AddRemoveBasket(Course course, List<Course> coursesInJadwal, List<Course> coursesInBasket,
+    public static Button AddRemoveBasket(Course course, List<Course> coursesInBasket,
             VBox card, VBox cardsmol, Map<String,List<Course>> dayLists, HBox calendar, Drawer drawer) {
 
         Button button = new Button("Add");
@@ -97,7 +99,7 @@ public class components {
                 }
                 // Start creating the card for the basket.
                 else {
-                    coursesInJadwal.add(course);
+                  
                     coursesInBasket.remove(course);
 
                     System.out.println("Done1");
@@ -109,13 +111,14 @@ public class components {
                     System.out.println("Done3");
                     // Remove the card that has been pressed from basket.
                     card.getChildren().remove(cardsmol);
+
+                    System.out.println(dayLists);
                 }
 
                 // Setstate.
                 drawer.reDraw();
             }
 
-            System.out.println(coursesInJadwal.size());
         });
 
         return button;
@@ -129,7 +132,7 @@ public class components {
 
         Button button = new Button("Delete");
         button.setStyle("-fx-background-color: black; -fx-text-fill: white;");
-        button.setMinWidth(70);
+        button.setPrefHeight(70);
         button.setMinHeight(20);
         button.setOnAction(e -> {
             // Remove from jadwal when clicked.
@@ -139,20 +142,34 @@ public class components {
 
                 }
             }
+            VBox courseCard = new VBox(0);
+            
+            courseCard.setAlignment(Pos.CENTER);
+            courseCard.setStyle("-fx-background-color: gray");
+            courseCard.setPadding(new Insets(10, 10, 10, 10));
+            courseCard.getChildren().addAll(
+                components.itemCard(course.getTitle() + " " + course.getActivity()),
+                components.itemCard(course.getDays()),
+                components.itemCard(course.getTime()),
+                components.AddRemoveBasket(course,  drawer.getCourseBasket(), drawer.getVBasket(), courseCard,
+                        drawer.getMapDays(),
+                        drawer.getCalendar(), drawer));
 
-            for (Map.Entry<String,List<Course>> entry : days.entrySet()) {
-                entry.getValue().contains(course);
-                entry.getValue().remove(course);
-            }
+        courseCard.setAlignment(Pos.CENTER);
+        drawer.getVBasket().getChildren().addAll(courseCard);
+            
             caledar.getChildren().clear();
-            // Redraw the jadwal.
+            System.out.println("Delete");
             caledar.getChildren().addAll(addCourseToJadwal(null, days, drawer, caledar));
 
         });
         VBox vBox = new VBox(0);
         vBox.setMinHeight(height);
+        
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(components.itemCard(course.getTitle()),
+        components.itemCard(course.getTime()),
+
                 button);
         // String cssLayout = "-fx-border-color: black;\n" +
         // "-fx-border-insets: 5;\n" +
@@ -160,7 +177,7 @@ public class components {
         vBox.setStyle("-fx-background-color: green");
 
         VBox pane = new VBox();
-        pane.setPadding(new Insets(10));
+        pane.setPadding(new Insets(0));
         pane.getChildren().add(vBox);
 
         return pane;
@@ -239,11 +256,15 @@ public class components {
         for (int i = 0; i < courses.size(); i++) {
             Course course = courses.get(i);
 
-            VBox vBox = new VBox();
-            vBox.setPrefHeight((course.getBeginHour() - base) * 2);
-            columnFinal.add(vBox);
+            VBox spacing = new VBox(0);
+            spacing.setPadding(new Insets(0,0,0,0));
+            VBox.setMargin(spacing, new Insets(0, 0, 0, 0));
+           spacing.setPrefHeight((course.getBeginHour() - base) * 2);
+          
+          columnFinal.add(spacing);
             VBox courseBox = jadwalCard(course, (course.getEndHour() - course.getBeginHour()) * 2, drawer, days,
                     calendar);
+                    VBox.setMargin(courseBox, new Insets(0, 0, 0, 0));
             columnFinal.add(courseBox);
             base = course.getEndHour();
 
@@ -256,39 +277,39 @@ public class components {
     // This method will draw the calendar again with the new changes, either delete
     // or add course.
     public static List<VBox> addCourseToJadwal(Course course, Map<String,List<Course>> days, Drawer drawer, HBox oldCalendar) {
-        VBox sunday = new VBox();
-
-        VBox monday = new VBox();
-        VBox tuesday = new VBox();
-        VBox wednsday = new VBox();
-        VBox thursday = new VBox();
-        sunday.getChildren().add(components.itemCard("Sunday"));
-        monday.getChildren().add(components.itemCard("Monday"));
-        tuesday.getChildren().add(components.itemCard("Tuesday"));
-        wednsday.getChildren().add(components.itemCard("Wednesday"));
-        thursday.getChildren().add(components.itemCard("Thursday"));
+    
+        VBox sunday = new VBox(0);
+        VBox monday = new VBox(0);
+        VBox tuesday = new VBox(0);
+        VBox wednsday = new VBox(0);
+        VBox thursday = new VBox(0);
+       
         String cssLayout = "-fx-border-color: black;\n" +
 
                 "-fx-border-width: 3;\n";
-        sunday.setMinWidth(200);
+     
+
+        
+        sunday.setPrefWidth(200);
+      
         sunday.setStyle(cssLayout);
-        sunday.setAlignment(Pos.BASELINE_CENTER);
+        
 
         monday.setStyle(cssLayout);
         monday.setPrefWidth(200);
-        monday.setAlignment(Pos.BASELINE_CENTER);
+     
+        
 
         tuesday.setStyle(cssLayout);
         tuesday.setPrefWidth(200);
-        tuesday.setAlignment(Pos.BASELINE_CENTER);
+        
 
         wednsday.setStyle(cssLayout);
         wednsday.setPrefWidth(200);
-        wednsday.setAlignment(Pos.BASELINE_CENTER);
+        
 
         thursday.setStyle(cssLayout);
-        thursday.setPrefWidth(200);
-        thursday.setAlignment(Pos.BASELINE_CENTER);
+       
         List<VBox> calendar = new ArrayList<>();
         if (course != null) {
 
@@ -330,12 +351,21 @@ public class components {
 
             }
         }
+        sunday.setPadding(new Insets(0,0,0,0));
+        monday.setPadding(new Insets(0,0,0,0));
+        tuesday.setPadding(new Insets(0,0,0,0));
+        wednsday.setPadding(new Insets(0,0,0,0));
+        thursday.setPadding(new Insets(0,0,0,0));
+
+        sunday.setSpacing(0);
+
+        System.out.println(columnMaker(days.get("Sunday"), days, drawer, oldCalendar));
         sunday.getChildren().addAll(columnMaker(days.get("Sunday"), days, drawer, oldCalendar));
         monday.getChildren().addAll(columnMaker(days.get("Monday"), days, drawer, oldCalendar));
         tuesday.getChildren().addAll(columnMaker(days.get("Tuesday"), days, drawer, oldCalendar));
         wednsday.getChildren().addAll(columnMaker(days.get("Wednsday"), days, drawer, oldCalendar));
         thursday.getChildren().addAll(columnMaker(days.get("Thursday"), days, drawer, oldCalendar));
-
+     
         calendar.add(sunday);
         calendar.add(monday);
         calendar.add(tuesday);

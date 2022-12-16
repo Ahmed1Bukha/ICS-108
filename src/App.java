@@ -2,7 +2,7 @@
 import javafx.application.Application;
 
 import javafx.scene.Scene;
-
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -21,6 +21,9 @@ public class App extends Application {
 
     Scene firstPage = FirstPage.scene(
         basketCourses, primaryStage, drawer);
+
+    
+
 
     primaryStage.setScene(firstPage);
     primaryStage.show();
