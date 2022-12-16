@@ -31,7 +31,7 @@ public class SecondPage {
         Scene scene2;
 
         
-        
+       if(!schuMap.containsKey("Sunday")){
         List<Course> sunday = new ArrayList<>();
         List<Course> monday = new ArrayList<>();
         List<Course> tuesday = new ArrayList<>();
@@ -43,13 +43,14 @@ public class SecondPage {
         schuMap.put("Tuesday",tuesday);
         schuMap.put("Wednsday",wednsday);
         schuMap.put("Thursday",thursday);
-        ArrayList<List> days = new ArrayList<>();
+       }
+       else{
+        System.out.println("lmfao");
+       }
+       
+       
 
-        days.add(sunday);
-        days.add(monday);
-        days.add(tuesday);
-        days.add(wednsday);
-        days.add(thursday);
+
 
         List<Course> jadwal = new ArrayList<>();
         VBox coursesColumn = new VBox();
@@ -67,7 +68,10 @@ public class SecondPage {
         calendar.setMinHeight(2000);
         calendar.setPadding(new Insets(0, 20, 0, 20));
         scrollPane2.setMaxWidth(900);
+        calendar.getChildren().addAll(
+components.addCourseToJadwal(null, schuMap, drawer, calendar)
 
+        );
         scrollPane2.setContent(calendar);
 
         calendar.setPadding(new Insets(0));

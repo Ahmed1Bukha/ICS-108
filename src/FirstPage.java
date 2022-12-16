@@ -123,6 +123,7 @@ public class FirstPage {
                 Map<String,List<Course>> newMap = (Map<String,List<Course>>) inputObj.readObject();
                 for(String key :newMap.keySet()){
                    schuMap.put(key,newMap.get(key));
+                   System.out.println(newMap);
                 }
                 
 
