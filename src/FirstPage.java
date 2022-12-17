@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
@@ -55,11 +58,28 @@ public class FirstPage {
                     schuMap.put(key, newMap.get(key));
                     System.out.println(newMap);
                 }
+                Alert a1 = new Alert(AlertType.NONE,
+                "Done importing",ButtonType.APPLY);
+                a1.show();
 
             } catch (IOException e1) {
+                Alert a1 = new Alert(AlertType.NONE,
+                "Saved schudle is not found",ButtonType.APPLY);
+
+                a1.show();
                 e1.printStackTrace();
             } catch (ClassNotFoundException e1) {
+                Alert a1 = new Alert(AlertType.NONE,
+                "Try to restart the program",ButtonType.APPLY);
+
+                a1.show();
                 e1.printStackTrace();
+            }
+            catch(Exception ex){
+                Alert a1 = new Alert(AlertType.NONE,
+                "Exception",ButtonType.APPLY);
+
+                a1.show();
             }
 
         });
