@@ -6,8 +6,11 @@ import java.util.Set;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -27,20 +30,53 @@ public class components {
     }
 
     // This is the method for the buttons in page1.
-    public static Button AddRemoveButton(Course course, List<Course> coursesInBasket) {
+    public static Button AddRemoveButton(Course course, List<Course> coursesInBasket, Map<String, List<Course>> schuMap) {
 
         Button button = new Button("Add");
         button.setStyle("-fx-background-color: green; -fx-text-fill: white;");
         button.setMinWidth(60);
 
         button.setOnAction(e -> {
-            if (button.getText().equals("Add")) {
+
+            boolean isBreak = false;
+
+            for (Map.Entry<String, List<Course>> entry : schuMap.entrySet()){
+
+                List<Course> tempo = entry.getValue();
+
+                for(int i=0;i < tempo.size(); i++){
+                    if(tempo.get(i).getTitle().equals(course.getTitle())){
+                        Alert a1 = new Alert(AlertType.NONE,
+                        "The coures is already in the schedule!",ButtonType.APPLY);
+                  
+                        a1.show();
+                        isBreak =true;
+                        break;
+                        
+
+          
+                    }
+                    
+                }
+                if(isBreak){
+                    break;
+                }
+                }
+
+
+            if (button.getText().equals("Add") && !isBreak) {
+               
+           
+
                 coursesInBasket.add(course);
                 button.setText("Remove");
                 button.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+
             }
 
-            else if (button.getText().equals("Remove")) {
+            else if (button.getText().equals("Remove" )&& !isBreak
+            
+            ) {
                 coursesInBasket.remove(course);
                 button.setText("Add");
                 button.setStyle("-fx-background-color: green; -fx-text-fill: white;");

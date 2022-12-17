@@ -105,7 +105,7 @@ public class FirstPage {
             /// the row which contains the course data and the add/remove button
             BorderPane pane = new BorderPane();
             pane.setCenter(courseRow);
-            pane.setRight(components.AddRemoveButton(coursesOffered.get(i), basketCourses));
+            pane.setRight(components.AddRemoveButton(coursesOffered.get(i), basketCourses,schuMap));
             pane.setPadding(new Insets(0, 10, 0, 0));
 
             ;
