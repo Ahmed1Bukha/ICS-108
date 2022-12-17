@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
+
 public class Course implements Comparable<Course>, Serializable {
 
     private String title;
@@ -158,8 +162,16 @@ public class Course implements Comparable<Course>, Serializable {
             System.out.println(Courses);
             return Courses;
         } catch (IOException e) {
+            Alert a1 = new Alert(AlertType.NONE,
+            "There's a problem with the files. Make sure that you have the files in the file dic.",ButtonType.APPLY);
+      
+            a1.show();
+        
+            
+
             System.out.println("An error occurred.");
             e.printStackTrace();
+            
             return Courses;
         }
 

@@ -6,6 +6,9 @@ import javafx.stage.Stage;
 
 import java.util.*;
 
+//Note:
+// Open the src project in order to get the path for the files.
+
 public class App extends Application {
 
   @Override // Override the start method in the Application class
