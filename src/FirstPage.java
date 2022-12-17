@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -25,31 +25,56 @@ public class FirstPage {
     public static Scene scene(List<Course> basketCourses, Stage primaryStage, Drawer drawer) {
         Scene scene1;
         ScrollPane scrollPane1 = new ScrollPane();
-        Map<String,List<Course>>schuMap = new LinkedHashMap<String,List<Course>>();
+        BorderPane pane1 = new BorderPane();
+        VBox coursesDataColumn = new VBox(6);
+        Map<String, List<Course>> schuMap = new LinkedHashMap<String, List<Course>>();
+
+        // Schedule button and its style
         Button button1 = new Button("Schedule");
-        Button startWithSaved= new Button("Start with saved Schedule");
         button1.setFont(new Font(25));
         button1.setMinHeight(40);
         button1.setMaxWidth(500);
         button1.setPadding(new Insets(20));
-
         button1.setStyle("-fx-background-color: black; -fx-text-fill: white;");
-        BorderPane pane1 = new BorderPane();
+        /// this button is for saving the schedule data in dat file
+        Button startWithSaved = new Button("Start with saved Schedule");
+        startWithSaved.setFont(new Font(15));
+        startWithSaved.setMinHeight(40);
+        startWithSaved.setPadding(new Insets(10));
+        startWithSaved.setStyle("-fx-background-color: green; -fx-text-fill: white;");
         Label title = new Label("Add to Basket");
-
+        title.setFont(new Font("Arial", 40));
         title.setStyle("-fx-text-fill: white");
-        title.setAlignment(Pos.CENTER);
-        List<Course> coursesOffered = Course.coursesPossible("CourseOffering.csv", "FinishedCourses.csv",
-                "DegreePlan.csv");
+        startWithSaved.setOnAction(e -> {
+            try {
+                FileInputStream file = new FileInputStream("saved.dat");
+                ObjectInputStream inputObj = new ObjectInputStream(file);
 
-        VBox vbox = new VBox(coursesOffered.size() + 1);
+                Map<String, List<Course>> newMap = (Map<String, List<Course>>) inputObj.readObject();
+                for (String key : newMap.keySet()) {
+                    schuMap.put(key, newMap.get(key));
+                    System.out.println(newMap);
+                }
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (ClassNotFoundException e1) {
+                e1.printStackTrace();
+            }
+
+        });
 
         HBox courseOfferingTitles = new HBox(6);
         /// Coloring of the page
         pane1.setStyle("-fx-background-color: gray");
-        vbox.setStyle("-fx-background-color: gray");
+        coursesDataColumn.setStyle("-fx-background-color: gray");
         scrollPane1.setStyle("-fx-background-color: gray");
         courseOfferingTitles.setStyle("-fx-background-color: black");
+        /// alignments
+
+        BorderPane.setAlignment(button1, Pos.CENTER);
+        BorderPane.setAlignment(title, Pos.CENTER);
+        BorderPane.setAlignment(scrollPane1, Pos.CENTER);
         /// titles of courses row
         courseOfferingTitles.getChildren().addAll(
                 components.itemCard("        Title     "),
@@ -59,6 +84,10 @@ public class FirstPage {
                 components.itemCard("           Time     "),
                 components.itemCard("    Days "));
 
+        /// this the list of courses which will be used in List view
+
+        List<Course> coursesOffered = Course.coursesPossible("CourseOffering.csv", "FinishedCourses.csv",
+                "DegreePlan.csv");
         /// Courses List view
         for (int i = 0; i < coursesOffered.size(); i++) {
             HBox courseRow = new HBox(8);
@@ -73,72 +102,49 @@ public class FirstPage {
                     components.itemCard("                                    ")
 
             );
-
+            /// the row which contains the course data and the add/remove button
             BorderPane pane = new BorderPane();
             pane.setCenter(courseRow);
             pane.setRight(components.AddRemoveButton(coursesOffered.get(i), basketCourses));
             pane.setPadding(new Insets(0, 10, 0, 0));
 
             ;
-            vbox.getChildren().add(pane);
+            coursesDataColumn.getChildren().add(pane);
         }
-
-        title.setFont(new Font("Arial", 40));
 
         pane1.setPadding(new Insets(15, 20, 15, 20));
         scrollPane1.fitToWidthProperty().set(true);
         scrollPane1.setPadding(new Insets(20, 0, 20, 0));
-        ////// will fix and design it later
+        ////// this the Fist row that contains the title and saving button
+        BorderPane pane = new BorderPane();
+        pane.setRight(startWithSaved);
+        pane.setCenter(title);
+        pane.setPadding(new Insets(0, 10, 0, 0));
+        /// top Box is the title and button and course offering titles
         VBox topBox = new VBox();
-        topBox.getChildren().addAll(title, courseOfferingTitles);
-        topBox.setSpacing(15);
+        topBox.getChildren().addAll(pane, courseOfferingTitles);
+        topBox.setSpacing(25);
         topBox.setAlignment(Pos.BASELINE_CENTER);
         pane1.setTop(topBox);
+
+        /// setting button at the bottom
         pane1.setBottom(button1);
 
-        scrollPane1.setContent(vbox);
+        /// here we are setting the whole courses data to the main pane
+        scrollPane1.setContent(coursesDataColumn);
 
         pane1.setCenter(scrollPane1);
 
-        BorderPane.setAlignment(button1, Pos.CENTER);
-        BorderPane.setAlignment(title, Pos.CENTER);
-        BorderPane.setAlignment(scrollPane1, Pos.CENTER);
         scene1 = new Scene(pane1, 1200, 600);
         button1.setOnAction(e -> {
             primaryStage.setScene(SecondPage.Scene(ee -> {
                 primaryStage.setScene(scene1);
                 basketCourses.removeAll(basketCourses);
-            }, basketCourses, drawer,schuMap));
+            }, basketCourses, drawer, schuMap));
         });
-
-
-        
-        pane1.setTop(startWithSaved);
-        pane1.setAlignment(startWithSaved, Pos.TOP_RIGHT);
-        startWithSaved.setOnAction(e ->{
-            try  {
-                FileInputStream file = new FileInputStream("saved.dat");
-                ObjectInputStream inputObj = new ObjectInputStream(file);
-
-                Map<String,List<Course>> newMap = (Map<String,List<Course>>) inputObj.readObject();
-                for(String key :newMap.keySet()){
-                   schuMap.put(key,newMap.get(key));
-                   System.out.println(newMap);
-                }
-                
-
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } catch (ClassNotFoundException e1) {
-                e1.printStackTrace();
-            }
-            
-
-        });
-
 
         return scene1;
-        
+
     }
-   
+
 }
